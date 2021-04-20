@@ -1,3 +1,3 @@
-R:/Desktop/Uni/lab/domes/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-R:/Desktop/Uni/lab/domes/cmake-build-debug/CMakeFiles/test.dir
-R:/Desktop/Uni/lab/domes/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Projects/C++ projects/CSD AUTH/Data Structures (NCO-02-03)/dsProject21/dsProject21/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/Projects/C++ projects/CSD AUTH/Data Structures (NCO-02-03)/dsProject21/dsProject21/cmake-build-debug/CMakeFiles/test.dir
+D:/Projects/C++ projects/CSD AUTH/Data Structures (NCO-02-03)/dsProject21/dsProject21/cmake-build-debug/CMakeFiles/edit_cache.dir
