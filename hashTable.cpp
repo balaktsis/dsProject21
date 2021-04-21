@@ -4,6 +4,8 @@
 
 #include "hashTable.h"
 
+
+
 /*
  *  N O D E S !
  */
@@ -13,11 +15,11 @@ Node::Node(string word, int occurences) {   // Constructor for the Node class
     this->occurences = occurences;
 }
 
+
+
 /*
  *  L I S T !
  */
-
-
 
 void list::insert(string word, int occurences) {   //Node insertion algorithm; Finds the end of the Node chain and
     if (first == nullptr){                         //initializes a new node at the end. Also iterates the len variable
@@ -45,6 +47,8 @@ int list::find(string word) {                //Iterate through all the Nodes in 
 
     return 0;                                //This point will be reached only if the word isn't found.
 }
+
+
 
 /*
  *  H A S H E S
