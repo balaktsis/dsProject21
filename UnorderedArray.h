@@ -17,5 +17,6 @@ public:
     UnorderedArray();
     void Insert(const string &);                    //Inserts a NEW word in array (checks for existed ones)
     bool Search(const string &, double &, int &);   //Searches for a given word and returns (by ref.) time needed and number of appearances; true := word exists
+    bool Delete(const string &);                    //Deletes a word of the array (if deletion's completed, returns true)
 };
 #endif //UNORDEREDARRAY_H
