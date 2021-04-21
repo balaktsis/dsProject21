@@ -51,7 +51,6 @@ void UnorderedArray::Insert(const string &word) {           //Inserts a new word
 }
 
 bool UnorderedArray::Search(const string &word, int &pos, int &num) {
-    auto start = std::chrono::steady_clock::now();
     if(size == 0) {
         return false;
     }
