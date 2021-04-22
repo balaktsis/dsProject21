@@ -5,7 +5,6 @@
 #include "hashTable.h"
 
 
-
 /*
  *  N O D E S !
  */
@@ -16,18 +15,16 @@ Node::Node(string word, int occurences) {   // Constructor for the Node class
 }
 
 
-
 /*
  *  L I S T !
  */
 
 void list::insert(string word, int occurences) {   //Node insertion algorithm; Finds the end of the Node chain and
-    if (first == nullptr){                         //initializes a new node at the end. Also iterates the len variable
+    if (len == 0) {                                 //initializes a new node at the end. Also iterates the len variable
         first = new Node(word, occurences);
-    }
-    else {
+    } else {
         Node *accessedNode = first;
-        for (int i = 0; i < len-1; ++i) {
+        for (int i = 0; i < len - 1; ++i) {
             accessedNode = accessedNode->next;
         }
         accessedNode->next = new Node(word, occurences);
@@ -35,11 +32,11 @@ void list::insert(string word, int occurences) {   //Node insertion algorithm; F
     len++;
 }
 
-int list::find(string word) {                //Iterate through all the Nodes in the list to find a certain string.
-    Node *accessedNode = first;              //If the string isn't found it'll return 0.
+int list::search(string word) {                //Iterate through all the Nodes in the list to find a certain string.
+    Node *accessedNode = first;                //If the string isn't found it'll return 0.
 
-    while (accessedNode!= nullptr) {
-        if (accessedNode->word == word){
+    while (accessedNode != nullptr) {
+        if (accessedNode->word == word) {
             return accessedNode->occurences;
         }
         accessedNode = accessedNode->next;
@@ -47,7 +44,6 @@ int list::find(string word) {                //Iterate through all the Nodes in 
 
     return 0;                                //This point will be reached only if the word isn't found.
 }
-
 
 
 /*
@@ -66,7 +62,6 @@ hashTable::hashTable(int size) {
 
 int hashTable::stringToHash(string word) {      //Implementation of a polynomial hash function
 
-
     int prime = 31, m = size, seed = 1;
     int hash_val = 0;
 
@@ -77,13 +72,13 @@ int hashTable::stringToHash(string word) {      //Implementation of a polynomial
     return hash_val;
 }
 
-int hashTable::find(string word) {
+int hashTable::search(string word) {
     int key = stringToHash(word);
-    return table[key].len ? table[key].find(word) : 0;
+    return table[key].len ? table[key].search(word) : 0;
 }
 
 void hashTable::insert(string word, int occurences) {
-    if (find(word)){                    //Check if the word exists already
+    if (search(word)) {                    //Check if the word exists already
         return;
     }
     int key = stringToHash(word);       //If the code reaches here, the word doesn't exist, so a key is generated
