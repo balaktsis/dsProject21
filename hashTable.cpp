@@ -9,9 +9,9 @@
  *  N O D E S !
  */
 
-Node::Node(string word, int occurences) {   // Constructor for the Node class
+Node::Node(string word, int occurrences) {   // Constructor for the Node class
     this->word = word;
-    this->occurences = occurences;
+    this->occurrences = occurrences;
 }
 
 
@@ -19,15 +19,15 @@ Node::Node(string word, int occurences) {   // Constructor for the Node class
  *  L I S T !
  */
 
-void list::insert(string word, int occurences) {   //Node insertion algorithm; Finds the end of the Node chain and
-    if (len == 0) {                                 //initializes a new node at the end. Also iterates the len variable
-        first = new Node(word, occurences);
+void list::insert(string word, int occurrences) {   //Node insertion algorithm; Finds the end of the Node chain and
+    if (len == 0) {                                //initializes a new node at the end. Also iterates the len variable
+        first = new Node(word, occurrences);
     } else {
         Node *accessedNode = first;
         for (int i = 0; i < len - 1; ++i) {
             accessedNode = accessedNode->next;
         }
-        accessedNode->next = new Node(word, occurences);
+        accessedNode->next = new Node(word, occurrences);
     }
     len++;
 }
@@ -37,7 +37,7 @@ int list::search(string word) {                //Iterate through all the Nodes i
 
     while (accessedNode != nullptr) {
         if (accessedNode->word == word) {
-            return accessedNode->occurences;
+            return accessedNode->occurrences;
         }
         accessedNode = accessedNode->next;
     }
@@ -77,10 +77,10 @@ int hashTable::search(string word) {
     return table[key].len ? table[key].search(word) : 0;
 }
 
-void hashTable::insert(string word, int occurences) {
+void hashTable::insert(string word, int occurrences) {
     if (search(word)) {                    //Check if the word exists already
         return;
     }
     int key = stringToHash(word);       //If the code reaches here, the word doesn't exist, so a key is generated
-    table[key].insert(word, occurences);//and inserted in the appropriate spot on the table
+    table[key].insert(word, occurrences);//and inserted in the appropriate spot on the table
 }
