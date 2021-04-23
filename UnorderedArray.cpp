@@ -4,6 +4,7 @@
 
 #include "UnorderedArray.h"
 #include <string>
+#include <cstring>
 
 UnorderedArray::UnorderedArray() {
     data = nullptr;
@@ -22,9 +23,9 @@ void UnorderedArray::Insert(const string &word) {           //Inserts a new word
             new_data = new string[size];
             new_num = new int[size];
 
+            memcpy(new_num,num,(size-1)*sizeof(int));
             for (int i = 0; i < size - 1; i++) {
                 new_data[i] = data[i];
-                new_num[i] = num[i];
             }
             delete[] data;
             delete[] num;
@@ -58,10 +59,10 @@ void UnorderedArray::InsertUnique(const string &word, int m) {
         new_data = new string[size];
         new_num = new int[size];
 
+        memcpy(new_num,num,(size-1)*sizeof(int));
         for (int i = 0; i < size - 1; i++) {
-            new_data[i] = data[i];
-            new_num[i] = num[i];
-        }
+             new_data[i] = data[i];
+         }
         delete[] data;
         delete[] num;
         data = new_data;
@@ -69,11 +70,12 @@ void UnorderedArray::InsertUnique(const string &word, int m) {
     }
     else {
         string *new_data;
-        new_data = new string[size];
-        delete[] data;
-        data = new_data;
         int *new_num;
         new_num = new int[size];
+        new_data = new string[size];
+
+        delete[] data;
+        data = new_data;
         delete[] num;
         num = new_num;
     }
@@ -114,15 +116,16 @@ bool UnorderedArray::Delete(const string &word) {                   //Deletes an
         new_data = new string[size-1];
         new_num = new int[size-1];
 
+
+        memcpy(new_num,num,pos*sizeof(int));
                                                                    //Copying to new arrays (one-less-cell-sized) data[] and num[]
         for(int i = 0; i<pos; i++) {
             new_data[i] = data[i];
-            new_num[i] = num[i];
         }
 
+        memcpy((new_num+(pos)*sizeof(int)),(num+(pos+1)*sizeof(int)),(size-1)*sizeof(int));
         for(int i = pos; i < size-1; i++) {
             new_data[i] = data[i+1];
-            new_num[i] = num[i+1];
         }
 
         size--;
