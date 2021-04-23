@@ -4,7 +4,6 @@
 
 #include "UnorderedArray.h"
 #include <string>
-#include <chrono>
 
 UnorderedArray::UnorderedArray() {
     data = nullptr;
@@ -82,7 +81,8 @@ bool UnorderedArray::Delete(const string &word) {                   //Deletes an
 
         new_data = new string[size-1];
         new_num = new int[size-1];
-                                                                    //Copying to new arrays (one-less-cell-sized) data[] and num[]
+
+                                                                   //Copying to new arrays (one-less-cell-sized) data[] and num[]
         for(int i = 0; i<pos; i++) {
             new_data[i] = data[i];
             new_num[i] = num[i];
@@ -92,6 +92,7 @@ bool UnorderedArray::Delete(const string &word) {                   //Deletes an
             new_data[i] = data[i+1];
             new_num[i] = num[i+1];
         }
+
         size--;
         delete[] data;
         delete[] num;
@@ -100,4 +101,19 @@ bool UnorderedArray::Delete(const string &word) {                   //Deletes an
 
         return true;
     }
+}
+
+UnorderedArray::~UnorderedArray() {
+    delete[] data;
+}
+
+int UnorderedArray::getSize() {
+    return size;
+}
+
+int UnorderedArray::getNum(int pos) const {
+    return num[pos];
+}
+string UnorderedArray::getData(int pos) const {
+    return data[pos];
 }
