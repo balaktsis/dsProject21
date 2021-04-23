@@ -49,6 +49,38 @@ void UnorderedArray::Insert(const string &word) {           //Inserts a new word
     }
 }
 
+void UnorderedArray::InsertUnique(const string &word, int m) {
+    size++;
+    if (data != nullptr) {
+        string *new_data;
+        int *new_num;
+
+        new_data = new string[size];
+        new_num = new int[size];
+
+        for (int i = 0; i < size - 1; i++) {
+            new_data[i] = data[i];
+            new_num[i] = num[i];
+        }
+        delete[] data;
+        delete[] num;
+        data = new_data;
+        num = new_num;
+    }
+    else {
+        string *new_data;
+        new_data = new string[size];
+        delete[] data;
+        data = new_data;
+        int *new_num;
+        new_num = new int[size];
+        delete[] num;
+        num = new_num;
+    }
+    data[size - 1] = word;
+    num[size - 1] = m;
+}
+
 bool UnorderedArray::Search(const string &word, int &pos, int &num) {
     if(size == 0) {
         return false;
@@ -107,7 +139,7 @@ UnorderedArray::~UnorderedArray() {
     delete[] data;
 }
 
-int UnorderedArray::getSize() {
+int UnorderedArray::getSize() const {
     return size;
 }
 
