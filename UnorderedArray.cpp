@@ -54,16 +54,15 @@ void UnorderedArray::Insert(const string &word) {           //Inserts a new word
 }
 
 void UnorderedArray::InsertUnique(const string &word, int m) {
-    if (data != nullptr && current_size+1 == size) {
+    if (data != nullptr && current_size == size) {
         string *new_data;
         int *new_num;
 
-        new_data = new string[size+5000];
-        new_num = new int[size+5000];
+        new_data = new string[size+step];
+        new_num = new int[size+step];
 
-        memcpy(new_num,num,(size-5000)*sizeof(int));
-        copy(&data[0],&data[size-5001], new_data);
-
+        memcpy(new_num,num,(size)*sizeof(int));
+        copy(&data[0],&data[size-1], new_data);
         /*for (int i = 0; i < size - 1; i++) {
              new_data[i] = data[i];
          }*/
@@ -72,13 +71,14 @@ void UnorderedArray::InsertUnique(const string &word, int m) {
         data = new_data;
         num = new_num;
         current_size = size;
-        size+=5000;
+        size+=step;
+        //current_size++;
     }
-    else {
+    else if(data == nullptr) {
         string *new_data;
         int *new_num;
-        new_num = new int[5000];
-        new_data = new string[5000];
+        new_num = new int[step];
+        new_data = new string[step];
         current_size = 0;
         size = 1;
         delete[] data;
@@ -163,4 +163,8 @@ int UnorderedArray::getNum(int pos) const {
 }
 string UnorderedArray::getData(int pos) const {
     return data[pos];
+}
+
+void UnorderedArray::setNum(long pos, int value) {
+    num[pos] = value;
 }

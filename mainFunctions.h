@@ -48,6 +48,15 @@ long initStructures(const string& filename, UnorderedArray &unorderedArray, hash
         }
         ifs.close();
 
+        printf("Filled\n");
+
+        for (long i = 0; i < uniqueCount; ++i) {
+            unorderedArray.setNum(i, HashTable.search(unorderedArray.getData(i)));
+//            printf("%d\n", i);
+        }
+
+        printf("Copied\n");
+
         string searchword = "legal";
         printf("\"%s\" appeared %d times in the Hash Table.\n",searchword.c_str(), HashTable.search(searchword));
         int pos, appearances;
