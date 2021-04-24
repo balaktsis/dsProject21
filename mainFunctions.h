@@ -22,8 +22,9 @@ string wordStrip(const string& word){
     return temp;
 }
 
-long initStructures(string filename, UnorderedArray &unorderedArray, hashTable &HashTable){
+long initStructures(const string& filename, UnorderedArray &unorderedArray, hashTable &HashTable){
     long count=0;
+    long uniqueCount=0;
     string word;
     ifstream ifs;
     ifs.open(filename);
@@ -37,18 +38,24 @@ long initStructures(string filename, UnorderedArray &unorderedArray, hashTable &
                 continue;
             }
             count++;
-            cout<<"Progress: "<<count<<"\r";
+//            cout<<"Progress: "<<count<<"\r";
+            if (HashTable.insert(word)){
+                uniqueCount++;
+                unorderedArray.InsertUnique(word, 0);
+            }
 
-            unorderedArray.Insert(word);    //Start off by filling the unordered array to avoid repeating word count calculations
 
         }
         ifs.close();
 
-        printf("Filling hashtable!");
+        string searchword = "legal";
+        printf("\"%s\" appeared %d times in the Hash Table.\n",searchword.c_str(), HashTable.search(searchword));
+        int pos, appearances;
+        unorderedArray.Search(searchword, pos, appearances);
+        printf("\"%s\" appeared %d times in the Unordered Table.\n",searchword.c_str(), appearances);
+        printf("Unique words: %ld.\n", uniqueCount);
+        printf("Total words: %ld.\n", count);
 
-        for (int i = 0; i < unorderedArray.size; ++i) {
-            HashTable.insert(unorderedArray.data[i], unorderedArray.num[i]);
-        }
 
 
 

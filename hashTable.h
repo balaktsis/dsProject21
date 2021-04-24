@@ -28,7 +28,8 @@ private:
 public:
     int len = 0;                  //Size of the list
 
-    void insert(string word, int occurrences);   //insert word into list (if doesn't exist)
+    void insertUnique(string word, int occurrences);   //insert word and occurence num into list (if doesn't exist)
+    bool insert(string word);     //insert word into list (if doesn't exist) and itterate it's occurences. Returns 1 if it was added.
     int search(string word);      //Find a word within the list and return it's occurrence number (0 if it doesn't exist)
 };
 
@@ -45,7 +46,8 @@ public:
     hashTable();                  //Constructor for the hash table with default size
     hashTable(int size);          //Constructor for the hash table with custom size
 
-    void insert(string word, int occurrences);   //Insert a word into the table if it doesn't exist
+    void insertUnique(string word, int occurrences);   //Insert a word  and occurence num into the table if it doesn't exist
+    bool insert(string word);     //Insert a word  and occurence num into the table if it doesn't exist. Returns 1 if it was added.
     int search(string word);      //Find a word within the table and return it's occurrence number (0 if it doesn't exist)
 };
 

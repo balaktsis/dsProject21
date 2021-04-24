@@ -19,8 +19,8 @@ Node::Node(string word, int occurrences) {   // Constructor for the Node class
  *  L I S T !
  */
 
-void list::insert(string word, int occurrences) {   //Node insertion algorithm; Finds the end of the Node chain and
-    if (len == 0) {                                //initializes a new node at the end. Also iterates the len variable
+void list::insertUnique(string word, int occurrences) {   //Node insertion algorithm; Finds the end of the Node chain and
+    if (len == 0) {                                       //initializes a new node at the end. Also iterates the len variable
         first = new Node(word, occurrences);
     } else {
         Node *accessedNode = first;
@@ -30,6 +30,20 @@ void list::insert(string word, int occurrences) {   //Node insertion algorithm; 
         accessedNode->next = new Node(word, occurrences);
     }
     len++;
+}
+
+bool list::insert(string word) {               //Insert a word if doesn't exist, iterate occurrences if it does.
+    if(!list::search(word)) {
+        insertUnique(word, 1);
+        return true;
+    } else {
+        Node *accessedNode = first;
+        while(accessedNode->word != word) {
+            accessedNode = accessedNode->next;
+        }
+        accessedNode->occurrences++;
+        return false;
+    }
 }
 
 int list::search(string word) {                //Iterate through all the Nodes in the list to find a certain string.
@@ -42,7 +56,7 @@ int list::search(string word) {                //Iterate through all the Nodes i
         accessedNode = accessedNode->next;
     }
 
-    return 0;                                //This point will be reached only if the word isn't found.
+    return 0;                                 //This point will be reached only if the word isn't found.
 }
 
 
@@ -77,10 +91,15 @@ int hashTable::search(string word) {
     return table[key].len ? table[key].search(word) : 0;
 }
 
-void hashTable::insert(string word, int occurrences) {
+void hashTable::insertUnique(string word, int occurrences) {
     if (search(word)) {                    //Check if the word exists already
         return;
     }
     int key = stringToHash(word);       //If the code reaches here, the word doesn't exist, so a key is generated
-    table[key].insert(word, occurrences);//and inserted in the appropriate spot on the table
+    table[key].insertUnique(word, occurrences);//and inserted in the appropriate spot on the table
+}
+
+bool hashTable::insert(string word) {
+    int key = stringToHash(word);
+    return table[key].insert(word);
 }
