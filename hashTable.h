@@ -28,9 +28,9 @@ private:
 public:
     int len = 0;                  //Size of the list
 
-    void insertUnique(string word, int occurrences);   //insert word and occurence num into list (if doesn't exist)
-    bool insert(string word);     //insert word into list (if doesn't exist) and itterate it's occurences. Returns 1 if it was added.
-    int search(string word);      //Find a word within the list and return it's occurrence number (0 if it doesn't exist)
+    void insertUnique(const string& word, int occurrences);   //insert word and occurrence num into list (if doesn't exist)
+    bool insert(const string& word);     //insert word into list (if doesn't exist) and iterate it's occurrences. Returns 1 if it was added.
+    int search(const string& word);      //Find a word within the list and return it's occurrence number (0 if it doesn't exist)
 };
 
 /*
@@ -38,17 +38,17 @@ public:
  */
 class hashTable {                 //Implementation of chain hashing
 private:
-    int size = 100;               //Size of the hash table
+    long size = 100;               //Size of the hash table
     list *table;                  //Array of lists
 
-    int stringToHash(string word);//Algorithm to convert strings into hash keys
+    int stringToHash(const string& word) const;//Algorithm to convert strings into hash keys
 public:
     hashTable();                  //Constructor for the hash table with default size
-    hashTable(int size);          //Constructor for the hash table with custom size
+    hashTable(long size);         //Constructor for the hash table with custom size
 
-    void insertUnique(string word, int occurrences);   //Insert a word  and occurence num into the table if it doesn't exist
-    bool insert(string word);     //Insert a word  and occurence num into the table if it doesn't exist. Returns 1 if it was added.
-    int search(string word);      //Find a word within the table and return it's occurrence number (0 if it doesn't exist)
+    void insertUnique(const string& word, int occurrences);   //Insert a word  and occurrence num into the table if it doesn't exist
+    bool insert(const string& word);     //Insert a word  and occurrence num into the table if it doesn't exist. Returns 1 if it was added.
+    int search(const string& word);      //Find a word within the table and return it's occurrence number (0 if it doesn't exist)
 };
 
 

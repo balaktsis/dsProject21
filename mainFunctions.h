@@ -33,7 +33,8 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
     if (ifs.is_open()) {
         cout << "File open ok" << endl;
         while (ifs >> word) {
-            word = wordStrip(word);
+            word = wordStrip(word);                       //Strips word of any non alphabetic characters and lowercases it.
+                                                          // Eg. "1.Your's" becomes "yours"
             if (word.empty() || (0 <= word[0] && word[0] <= 32)) {
                 continue;
             }
