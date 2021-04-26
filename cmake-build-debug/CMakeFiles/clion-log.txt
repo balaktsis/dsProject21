@@ -1,4 +1,0 @@
-"D:\Programs\CLion 2020.3.2\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "D:\Projects\C++ projects\CSD AUTH\Data Structures (NCO-02-03)\dsProject21\dsProject21"
--- Configuring done
--- Generating done
--- Build files have been written to: D:/Projects/C++ projects/CSD AUTH/Data Structures (NCO-02-03)/dsProject21/dsProject21/cmake-build-debug
