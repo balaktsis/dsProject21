@@ -12,8 +12,8 @@ protected:
     int step = 5000;
     string *data;                                   //array of strings
     int *num;                                       //number of appearances of each string/word
-    long size;                                  //size of array
-    long current_size;                          //used sized of array-1
+    long size;                                      //size of array
+    long current_size;                              //used sized of array-1
     bool Search_help(const string &, int &pos);     //Checks the existence of a word in array and returns position in array (if true)
 public:
     UnorderedArray();                               //Unordered Array constructor
