@@ -22,14 +22,24 @@ void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySiz
 }
 
 bool orderedArray::binSearch(const string &word, long &pos) {
+    if (size == 0){
+        pos = 0;
+        return false;
+    }
+
+
     long begin = 0, end = size-1;
     long mid = (begin+end)/2;
 
-    while (mid != end || mid != begin){
+    while (begin <= mid){
         if (word > data[mid]){
-            begin = mid;
-        } else {
-            end = mid;
+            begin = mid+1;
+        } else if (data[mid] == word){
+            pos = mid;
+            return true;
+        }
+        else {
+            end = mid-1;
         }
         mid = (begin+end)/2;
     }
@@ -40,6 +50,16 @@ bool orderedArray::binSearch(const string &word, long &pos) {
 }
 
 void orderedArray::insert(const string& word) {
+
+    if (size == 0){
+        size++;
+        data = new string[size];
+        num = new int[size];
+        data[0] = word;
+        num[0] = 1;
+        return;
+    }
+
     long pos;
     if (binSearch(word, pos)){
         num[pos] += 1;
@@ -57,14 +77,24 @@ void orderedArray::insert(const string& word) {
         newNum[i+1] = num[i];
     }
     size++;
+    delete[] data;
     data = newData;
+    delete[] num;
     num = newNum;
-    delete[] newNum;
-    delete[] newData;
 
 }
 
 void orderedArray::insertUnique(const string word, const int occurrences) {
+
+    if (size == 0){
+        size++;
+        data = new string[size];
+        num = new int[size];
+        data[0] = word;
+        num[0] = occurrences;
+        return;
+    }
+
     long pos;
     if (binSearch(word, pos)){  //If the word already exists, discard the operation
         return;
@@ -81,13 +111,16 @@ void orderedArray::insertUnique(const string word, const int occurrences) {
         newNum[i+1] = num[i];
     }
     size++;
+    delete[] data;
     data = newData;
+    delete[] num;
     num = newNum;
-    delete[] newNum;
-    delete[] newData;
 }
 
 int orderedArray::search(const string word) {
+    if (size == 0){
+        return 0;
+    }
     long pos;
     return binSearch(word, pos) ? num[pos] : 0;
 }
