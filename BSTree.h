@@ -34,22 +34,20 @@ struct BTNode {
 class BSTree {
 protected:
     BTNode *root;
-    void insert(BTNode*, string);
+    void insert(BTNode*, string&);
     long getHeight(BTNode*);
-    bool isBalanced(BTNode*);
     void deleteBST(BTNode*);
     void inOrder(BTNode*);
     void preOrder(BTNode*);
     void postOrder(BTNode*);
 public:
-    BSTree();                                           //Constructs a new Binary Search Tree.
-    ~BSTree();                                          //Destructor of Binary Search Tree.
-    void insert(string data);                           //Inserts new string (node) in BST.
-    long getHeight();                                   //Returns height of BTS.
-    BTNode * getMaxNode();
-    BTNode * getMinNode();
-    void deleteBST();
-    bool isBalanced();
+    BSTree();                                          //Constructs a new Binary Search Tree.
+    ~BSTree();                                         //Destructor of Binary Search Tree.
+    void insert(string &);                             //Inserts new string (node) in BST.
+    bool deleteWord(string &);                         //Deletes a word of the BST (returns true if word exists).
+    bool search(string &);                             //Searches a word in BST (returns true if word exists).
+    long getHeight();                                  //Returns height of BST.
+    void deleteBST();                                  //Deletes Binary Search Tree.
     void inOrder();
     void preOrder();
     void postOrder();
