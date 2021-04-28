@@ -10,6 +10,7 @@ using namespace std;
 
 struct BTNode {
    string data;
+   long num;
    BTNode *left;
    BTNode *right;
    BTNode() {
@@ -18,10 +19,12 @@ struct BTNode {
    }
    BTNode(const string &word) {
        data = word;
+       num = 0;
        left = nullptr;
        right = nullptr;
    }
    BTNode(const string &word, BTNode *l, BTNode *r) {
+       num = 0;
        data = word;
        right = r;
        left = l;
@@ -32,8 +35,8 @@ class BSTree {
 protected:
     BTNode *root;
     void insert(BTNode*, string);
-    bool isBalanced(BTNode*);
     long getHeight(BTNode*);
+    bool isBalanced(BTNode*);
     void deleteBST(BTNode*);
     void inOrder(BTNode*);
     void preOrder(BTNode*);
