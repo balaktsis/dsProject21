@@ -13,6 +13,9 @@ private:
     int *num;                   //Array storing the occurrences of words.
     long size;                  //Size of the array.
     bool binSearch(const string &word, long &pos);   //Binary search to be used internally.
+    void quicksort(long start, long end);
+    void swap(int &a, int &b);
+    void swap(string &a, string &b);
 public:
     orderedArray();
     void copyFromUnordered(string *newData, int *newNum, long arraySize);           //Copy a non sorted array and sort it.

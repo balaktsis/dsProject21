@@ -4,6 +4,7 @@
 #include <ctime>
 #include "mainFunctions.h"
 
+
 using namespace std;
 
 
@@ -15,7 +16,7 @@ int main() {
 
     hashTable HashTable(1000000); //small-file: ideal about 5k //gutenberg: 1.000.000
     UnorderedArray unorderedArray;
-    //sortedArray SortedArray;
+    orderedArray OrderedArray;
     //binaryTree BinaryTree;
     //avlBinaryTree AvlBinaryTree;
 
@@ -23,7 +24,7 @@ int main() {
     time_t begin,end; // time_t is a datatype to store time values.
     time (&begin); // note time before execution
 
-    double count = initStructures(filename, unorderedArray, HashTable);
+    double count = initStructures(filename, unorderedArray, HashTable, OrderedArray);
     time(&end);
 
     double difference = difftime (end,begin);

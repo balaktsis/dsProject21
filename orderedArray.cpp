@@ -12,11 +12,56 @@ orderedArray::orderedArray() {      //Initializing the array with null pointers 
     size = 0;
 }
 
-void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySize) {    //Implement quicksort on an int array
-    this->data = newData;                                                               //and keep it in relation to a string array
-    this->num = newNum;
-    size = arraySize;
+void orderedArray::swap(int &a, int &b){
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
 
+void orderedArray::swap(string& a, string& b){
+    string temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+
+
+void orderedArray::quicksort(long start, long end) {
+    long i, j, pivot;
+    string tempWord;
+
+    if(start<end){
+        pivot=start;
+        i=start;
+        j=end;
+
+        while(i<j){
+            for(;data[i]<=data[pivot]&&i<end;++i){}
+            for(;data[j]>data[pivot];--j){}
+
+            if(i<j){
+                swap(data[i], data[j]);
+                swap(num[i], num[j]);
+            }
+        }
+
+        swap(data[pivot], data[j]);
+        swap(num[pivot], num[j]);
+
+        quicksort(start,j-1);
+        quicksort(j+1,end);
+
+    }
+}
+
+void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySize) {    //Implement quicksort on an int array
+    this->size = arraySize;                                                             //and keep it in relation to a string array
+    this->data = new string[size];
+    this->num = new int[size];
+    copy(&newData[0], &newData[arraySize-1], this->data);
+    copy(&newNum[0], &newNum[arraySize-1], this->num);
+    quicksort(0, size-1);
     //TODO:Quicksort
 
 }
@@ -151,3 +196,4 @@ void orderedArray::remove(const string word) {      //The insert algorithm in re
 int orderedArray::getSize() const {
     return size;
 }
+

@@ -5,6 +5,7 @@
 
 #include "UnorderedArray.h"
 #include "hashTable.h"
+#include "orderedArray.h"
 
 #ifndef TEST_MAINFUNCTIONS_H
 #define TEST_MAINFUNCTIONS_H
@@ -23,10 +24,12 @@ string wordStrip(const string &word) {
     return temp;
 }
 
-long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable) {
+long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray) {
     long count = 0;
     long uniqueCount = 0;
     string word;
+    string *wordsHolder;
+    int *numsHolder;
 
     ifstream ifs;
     ifs.open(filename);
@@ -47,6 +50,9 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
         }
         ifs.close();
 
+
+        wordsHolder = new string[uniqueCount];
+        numsHolder = new int[uniqueCount];
         /*
          *  The unordered array is currently filled with all the unique words, but their frequencies aren't calculated yet.
          *  The hashtable has both, so we loop through every value in the Unordered Array and set it's appearances as the
@@ -57,8 +63,12 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
          *  just filling the hashtable.
          */
         for (long i = 0; i < uniqueCount; ++i) {
-            unorderedArray.setNum(i, HashTable.search(unorderedArray.getData(i)));
+            wordsHolder[i] = unorderedArray.getData(i);
+            numsHolder[i] = HashTable.search(wordsHolder[i]);
+            unorderedArray.setNum(i, numsHolder[i]);
         }
+        OrderedArray.copyFromUnordered(wordsHolder, numsHolder, uniqueCount);
+
 
 
         string searchword = "legal";
@@ -66,6 +76,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
         int pos, appearances;
         unorderedArray.Search(searchword, pos, appearances);
         printf("\"%s\" appeared %d times in the Unordered Table.\n", searchword.c_str(), appearances);
+        printf("\"%s\" appeared %d times in the Ordered Table.\n", searchword.c_str(), OrderedArray.search(searchword));
         printf("Unique words: %ld.\n", uniqueCount);
         printf("Total words: %ld.\n", count);
 
