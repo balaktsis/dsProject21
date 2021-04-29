@@ -1,14 +1,19 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ctime>
+#include <chrono>
+#include <random>
 
 #include "UnorderedArray.h"
 #include "hashTable.h"
 #include "orderedArray.h"
+#include "BSTree.h"
 
 #ifndef TEST_MAINFUNCTIONS_H
 #define TEST_MAINFUNCTIONS_H
+
+using namespace std;
+using namespace std::chrono;
 
 
 string wordStrip(const string &word) {
@@ -24,7 +29,7 @@ string wordStrip(const string &word) {
     return temp;
 }
 
-long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray) {
+long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree) {
     long count = 0;
     long uniqueCount = 0;
     string word;
@@ -47,6 +52,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
                 uniqueCount++;
                 unorderedArray.insertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
             }                                            //We'll use it as a lookup table later. So occurrences are 0.
+            BinaryTree.insert(word);
         }
         ifs.close();
 
@@ -69,13 +75,6 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
         }
         OrderedArray.copyFromUnordered(wordsHolder, numsHolder, uniqueCount);
 
-
-
-        string searchword = "legal";
-        OrderedArray.remove(searchword);
-        printf("\"%s\" appeared %d times in the Hash Table.\n", searchword.c_str(), HashTable.search(searchword));
-        printf("\"%s\" appeared %d times in the Unordered Table.\n", searchword.c_str(), unorderedArray.search(searchword));
-        printf("\"%s\" appeared %d times in the Ordered Table.\n", searchword.c_str(), OrderedArray.search(searchword));
         printf("Unique words: %ld.\n", uniqueCount);
         printf("Total words: %ld.\n", count);
 
@@ -85,6 +84,59 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 
     return count;
 }
+
+void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree){
+    string words[searchCount];
+    int value;
+    srand(searchCount);
+    for (int i = 0; i < searchCount; ++i) {
+        value = rand() % searchCount;
+        words[i] = unorderedArray.getData(value);
+    }
+
+    auto begin = high_resolution_clock::now(), end = high_resolution_clock::now() ;
+    duration<double, milli> elapsed = end - begin;
+    long count;
+
+    count = 0;
+    begin = high_resolution_clock::now();
+    for (int i = 0; i < searchCount; ++i) {count += unorderedArray.search(words[i]);}
+    end = high_resolution_clock::now();
+    elapsed = end - begin;
+    cout<<"Searching "<<searchCount<<" words in the Unordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+
+    count = 0;
+    begin = high_resolution_clock::now();
+    for (int i = 0; i < searchCount; ++i) {count += OrderedArray.search(words[i]);}
+    end = high_resolution_clock::now();
+    elapsed = end - begin;
+    cout<<"Searching "<<searchCount<<" words in the Ordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+
+    count = 0;
+    begin = high_resolution_clock::now();
+    for (int i = 0; i < searchCount; ++i) {count += BinaryTree.search(words[i]);}
+    end = high_resolution_clock::now();
+    elapsed = end - begin;
+    cout<<"Searching "<<searchCount<<" words in the Ordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+
+//      ------ Reserved for the AVL tree -----
+//    count = 0;
+//    begin = high_resolution_clock::now();
+//    for (int i = 0; i < searchCount; ++i) {count += BinaryTree.search(words[i]);}
+//    end = high_resolution_clock::now();
+//    elapsed = end - begin;
+//    cout<<"Searching "<<searchCount<<" words in the Ordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+
+    count = 0;
+    begin = high_resolution_clock::now();
+    for (int i = 0; i < searchCount; ++i) {count += HashTable.search(words[i]);}
+    end = high_resolution_clock::now();
+    elapsed = end - begin;
+    cout<<"Searching "<<searchCount<<" words in the Hash Table yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+
+}
+
+
 
 
 #endif //TEST_MAINFUNCTIONS_H

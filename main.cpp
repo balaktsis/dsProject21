@@ -1,34 +1,30 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ctime>
+//#include <ctime>
+#include <chrono>
 #include "mainFunctions.h"
 
 
 using namespace std;
-
+using namespace std::chrono;
 
 
 int main() {
 
     string filename = "../small-file.txt";
 
-
     hashTable HashTable(1000000); //small-file: ideal about 5k //gutenberg: 1.000.000
     UnorderedArray unorderedArray;
     orderedArray OrderedArray;
-    //binaryTree BinaryTree;
+    BSTree BinaryTree;
     //avlBinaryTree AvlBinaryTree;
 
 
-    time_t begin,end; // time_t is a datatype to store time values.
-    time (&begin); // note time before execution
 
-    double count = initStructures(filename, unorderedArray, HashTable, OrderedArray);
-    time(&end);
+    printf("Filling up the arrays...\n");
+    double count = initStructures(filename, unorderedArray, HashTable, OrderedArray, BinaryTree);
 
-    double difference = difftime (end,begin);
+    timeQSearches(10000, unorderedArray, HashTable, OrderedArray, BinaryTree);
 
-//    cout<<count<<endl;
-    cout<<"Total time: "<<difference<<" seconds.";
 }

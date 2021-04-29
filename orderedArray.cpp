@@ -138,7 +138,7 @@ orderedArray::insert(const string &word) {                     //Insert single w
 }
 
 void
-orderedArray::insertUnique(const string word, const int occurrences) {         //Identical to insert, but takes a set
+orderedArray::insertUnique(const string& word, const int occurrences) {         //Identical to insert, but takes a set
     //amount of occurrences, instead of
     if (size == 0) {                                                                 //manually incrementing.
         size++;
@@ -171,7 +171,7 @@ orderedArray::insertUnique(const string word, const int occurrences) {         /
     num = newNum;
 }
 
-int orderedArray::search(const string word) {       //Implementation of the binary search algo, but for public use.
+int orderedArray::search(const string& word) {       //Implementation of the binary search algo, but for public use.
     if (size == 0) {                                 //Returns the occurrences of a word (0 if none)
         return 0;
     }
