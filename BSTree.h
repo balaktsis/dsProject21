@@ -9,26 +9,26 @@
 using namespace std;
 
 struct BTNode {
-   string data;
-   long num;
-   BTNode *left;
-   BTNode *right;
-   BTNode() {
-       left = nullptr;
-       right = nullptr;
-   }
-   BTNode(const string &word) {
-       data = word;
-       num = 0;
-       left = nullptr;
-       right = nullptr;
-   }
-   BTNode(const string &word, BTNode *l, BTNode *r) {
-       num = 0;
-       data = word;
-       right = r;
-       left = l;
-   }
+    string data;
+    long num;
+    BTNode *left;
+    BTNode *right;
+    BTNode() {
+        left = nullptr;
+        right = nullptr;
+    }
+    BTNode(const string &word) {
+        data = word;
+        num = 1;
+        left = nullptr;
+        right = nullptr;
+    }
+    BTNode(const string &word, BTNode *l, BTNode *r) {
+        num = 1;
+        data = word;
+        right = r;
+        left = l;
+    }
 };
 
 class BSTree {
@@ -45,7 +45,7 @@ public:
     ~BSTree();                                         //Destructor of Binary Search Tree.
     void insert(string &);                             //Inserts new string (node) in BST.
     bool deleteWord(string &);                         //Deletes a word of the BST (returns true if word exists).
-    bool search(string &);                             //Searches a word in BST (returns true if word exists).
+    int search(string &);                             //Searches a word in BST (returns true if word exists).
     long getHeight();                                  //Returns height of BST.
     void deleteBST();                                  //Deletes Binary Search Tree.
     void inOrder();

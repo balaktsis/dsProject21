@@ -13,7 +13,7 @@ UnorderedArray::UnorderedArray() {
     current_size = 0;
 }
 
-void UnorderedArray::Insert(const string &word) {           //Inserts a new word in the array, after checking its existence
+void UnorderedArray::insert(const string &word) {           //Inserts a new word in the array, after checking its existence
     int pos;
     if (!Search_help(word,pos)) {
         size++;                                             //Updates size of array and reallocates its content to an extended array
@@ -53,7 +53,7 @@ void UnorderedArray::Insert(const string &word) {           //Inserts a new word
     }
 }
 
-void UnorderedArray::InsertUnique(const string &word, int m) {
+void UnorderedArray::insertUnique(const string &word, int m) {
     if (data != nullptr && current_size == size) {
         string *new_data;
         int *new_num;
@@ -91,7 +91,21 @@ void UnorderedArray::InsertUnique(const string &word, int m) {
     current_size++;
 }
 
-bool UnorderedArray::Search(const string &word, int &pos, int &num) {
+int UnorderedArray::search(const string &word) {
+    if(size == 0) {
+        return 0;
+    }
+    else {
+        for(int i = 0; i < size; i++) {
+            if(data[i] == word) {
+                return num[i];
+            }
+        }
+        return 0;
+    }
+}
+
+bool UnorderedArray::Search_help(const string &word, int &pos) {
     if(size == 0) {
         return false;
     }
@@ -99,7 +113,6 @@ bool UnorderedArray::Search(const string &word, int &pos, int &num) {
         for(int i = 0; i < size; i++) {
             if(data[i] == word) {
                 pos = i;
-                num = this->num[i];
                 return true;
             }
         }
@@ -107,12 +120,7 @@ bool UnorderedArray::Search(const string &word, int &pos, int &num) {
     }
 }
 
-bool UnorderedArray::Search_help(const string &word, int &pos) {
-    int n;
-    return Search(word,pos,n);
-}
-
-bool UnorderedArray::Delete(const string &word) {                   //Deletes an existing word of the array or returns false
+bool UnorderedArray::deleteWord(const string &word) {               //Deletes an existing word of the array or returns false
     int pos;                                                        //if word doesn't exist
     if(!Search_help(word,pos)) {                                 //Checks the existence and returns position in array (if true)
         return false;
@@ -129,9 +137,9 @@ bool UnorderedArray::Delete(const string &word) {                   //Deletes an
         copy(&data[0],&data[pos-1], new_data);
 
         //Copying to new arrays (one-less-cell-sized) data[] and num[]
-       /*for(int i = 0; i<pos; i++) {
-            new_data[i] = data[i];
-        }*/
+        /*for(int i = 0; i<pos; i++) {
+             new_data[i] = data[i];
+         }*/
 
         memcpy((new_num+(pos)*sizeof(int)),(num+(pos+1)*sizeof(int)),(size-1)*sizeof(int));
         copy(&data[pos+1],&data[size-1], new_data+pos*sizeof(string));

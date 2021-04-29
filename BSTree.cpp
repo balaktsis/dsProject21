@@ -85,7 +85,7 @@ bool BSTree::deleteWord(string &word) {
     }
     if(!p)                                              //Node not found.
         return false;
-                                                        //Handling case when p has 2 children.
+    //Handling case when p has 2 children.
     if(p->left && p->right) {
         BTNode *s = p->left;
         BTNode *ps = p;                                 //Parent of s.
@@ -142,9 +142,9 @@ void BSTree::inOrder(BTNode * tNode) {
 void BSTree::preOrder(BTNode * tNode)
 {
     if (tNode != nullptr) {
-    cout << tNode->data << " ";
-    preOrder(tNode->left);
-    preOrder(tNode->right);
+        cout << tNode->data << " ";
+        preOrder(tNode->left);
+        preOrder(tNode->right);
     }
 }
 
@@ -156,7 +156,7 @@ void BSTree::postOrder(BTNode * tNode) {
     }
 }
 
-bool BSTree::search(string &word) {
+int BSTree::search(string &word) {
     BTNode *p = root;                                     //Search pointer.
     while (p) {
         if (word < p->data) {
@@ -165,10 +165,9 @@ bool BSTree::search(string &word) {
             if (word > p->data)
                 p = p->right;
             else {
-                cout << "\"" << word << "\" found " << p->num << " times in text." << endl;
-                return true;
+                return p->num;
             }
         }
     }
-    return false;
+    return 0;
 }
