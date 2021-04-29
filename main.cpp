@@ -12,7 +12,7 @@ using namespace std::chrono;
 
 int main() {
 
-    string filename = "../small-file.txt";
+    string filename = "../gutenberg.txt";
 
     hashTable HashTable(1000000); //small-file: ideal about 5k //gutenberg: 1.000.000
     UnorderedArray unorderedArray;

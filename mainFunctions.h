@@ -117,7 +117,7 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     for (int i = 0; i < searchCount; ++i) {count += BinaryTree.search(words[i]);}
     end = high_resolution_clock::now();
     elapsed = end - begin;
-    cout<<"Searching "<<searchCount<<" words in the Ordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+    cout<<"Searching "<<searchCount<<" words in the Binary Search Tree yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
 //      ------ Reserved for the AVL tree -----
 //    count = 0;
