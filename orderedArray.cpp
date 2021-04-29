@@ -27,8 +27,8 @@ void orderedArray::swap(string& a, string& b){
 }
 
 
-void orderedArray::quicksort(long start, long end) {
-    long i, j, pivot;
+void orderedArray::quicksort(long start, long end) {        //Standard recursive quicksort implementation
+    long i, j, pivot;                                       //With the pivot on the 1st element
     string tempWord;
 
     if(start<end){
@@ -55,11 +55,11 @@ void orderedArray::quicksort(long start, long end) {
     }
 }
 
-void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySize) {    //Implement quicksort on an int array
-    this->size = arraySize;                                                             //and keep it in relation to a string array
+void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySize) {    //Implement quicksort on a string array
+    this->size = arraySize;                                                             //and keep it in relation to an int array
     this->data = new string[size];
     this->num = new int[size];
-    copy(&newData[0], &newData[arraySize-1], this->data);
+    copy(&newData[0], &newData[arraySize-1], this->data);                      //Copy two arrays passed by reference locally
     copy(&newNum[0], &newNum[arraySize-1], this->num);
     quicksort(0, size-1);
     //TODO:Quicksort
