@@ -45,7 +45,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
             if (HashTable.insert(word)) {           //Inserting words into the hashtable; returns true if the word is unique.
                                                          //If it's not unique, it increments it's internal occurrence counter.
                 uniqueCount++;
-                unorderedArray.InsertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
+                unorderedArray.insertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
             }                                            //We'll use it as a lookup table later. So occurrences are 0.
         }
         ifs.close();
@@ -71,11 +71,9 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 
 
 
-        string searchword = "ferrari";
+        string searchword = "poverty";
         printf("\"%s\" appeared %d times in the Hash Table.\n", searchword.c_str(), HashTable.search(searchword));
-        int pos, appearances;
-        unorderedArray.Search(searchword, pos, appearances);
-        printf("\"%s\" appeared %d times in the Unordered Table.\n", searchword.c_str(), appearances);
+        printf("\"%s\" appeared %d times in the Unordered Table.\n", searchword.c_str(), unorderedArray.search(searchword));
         printf("\"%s\" appeared %d times in the Ordered Table.\n", searchword.c_str(), OrderedArray.search(searchword));
         printf("Unique words: %ld.\n", uniqueCount);
         printf("Total words: %ld.\n", count);

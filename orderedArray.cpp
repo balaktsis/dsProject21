@@ -62,7 +62,6 @@ void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySiz
     copy(&newData[0], &newData[arraySize-1], this->data);                      //Copy two arrays passed by reference locally
     copy(&newNum[0], &newNum[arraySize-1], this->num);
     quicksort(0, size-1);
-    //TODO:Quicksort
 
 }
 
