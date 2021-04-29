@@ -6,6 +6,7 @@
 #include <string>
 #include <cstring>
 
+
 UnorderedArray::UnorderedArray() {
     data = nullptr;
     num = nullptr;
@@ -14,7 +15,7 @@ UnorderedArray::UnorderedArray() {
 }
 
 void UnorderedArray::insert(const string &word) {           //Inserts a new word in the array, after checking its existence
-    int pos;
+    long pos;
     if (!Search_help(word,pos)) {
         size++;                                             //Updates size of array and reallocates its content to an extended array
         if (data != nullptr) {
@@ -96,7 +97,7 @@ int UnorderedArray::search(const string &word) {
         return 0;
     }
     else {
-        for(int i = 0; i < size; i++) {
+        for(long i = 0; i < size; i++) {
             if(data[i] == word) {
                 return num[i];
             }
@@ -105,12 +106,12 @@ int UnorderedArray::search(const string &word) {
     }
 }
 
-bool UnorderedArray::Search_help(const string &word, int &pos) {
+bool UnorderedArray::Search_help(const string &word, long &pos) {
     if(size == 0) {
         return false;
     }
     else {
-        for(int i = 0; i < size; i++) {
+        for(long i = 0; i < size; i++) {
             if(data[i] == word) {
                 pos = i;
                 return true;
@@ -121,7 +122,7 @@ bool UnorderedArray::Search_help(const string &word, int &pos) {
 }
 
 bool UnorderedArray::deleteWord(const string &word) {               //Deletes an existing word of the array or returns false
-    int pos;                                                        //if word doesn't exist
+    long pos;                                                        //if word doesn't exist
     if(!Search_help(word,pos)) {                                 //Checks the existence and returns position in array (if true)
         return false;
     }
@@ -134,8 +135,9 @@ bool UnorderedArray::deleteWord(const string &word) {               //Deletes an
 
         memcpy(new_num,num,pos*sizeof(int));
         copy(&data[0],&data[pos-1], new_data);
+        //Copying to new arrays (one-less-cell-sized) data[] and num[]
 
-        for(int i = pos; i < size-1; i++) {
+        for(long i = pos; i < size-1; i++) {
             new_num[i] = num[i+1];
             new_data[i] = data[i+1];
         }
@@ -157,10 +159,10 @@ int UnorderedArray::getSize() const {
     return size;
 }
 
-int UnorderedArray::getNum(int pos) const {
+int UnorderedArray::getNum(long pos) const {
     return num[pos];
 }
-string UnorderedArray::getData(int pos) const {
+string UnorderedArray::getData(long pos) const {
     return data[pos];
 }
 
