@@ -22,7 +22,7 @@ public:
     void insert(const string& word);                                //Get a word and insert it in the correct order/increment it's appearance number.
     void insertUnique(string word, int occurrences);    //Get a word and occurrence number and place it in the correct spot.
     int search(string word);                                  //Search for a word and return it's occurrences (0 for none).
-    void remove(string word);                                 //Remove word from the array and readjust the order.
+    void remove(const string& word);                                 //Remove word from the array and readjust the order.
     int getSize() const;                                                  //Returns the size of the array.
 
 

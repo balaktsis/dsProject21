@@ -71,7 +71,8 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 
 
 
-        string searchword = "poverty";
+        string searchword = "legal";
+        OrderedArray.remove(searchword);
         printf("\"%s\" appeared %d times in the Hash Table.\n", searchword.c_str(), HashTable.search(searchword));
         printf("\"%s\" appeared %d times in the Unordered Table.\n", searchword.c_str(), unorderedArray.search(searchword));
         printf("\"%s\" appeared %d times in the Ordered Table.\n", searchword.c_str(), OrderedArray.search(searchword));
