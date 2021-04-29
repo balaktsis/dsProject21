@@ -132,22 +132,13 @@ bool UnorderedArray::deleteWord(const string &word) {               //Deletes an
         new_data = new string[size-1];
         new_num = new int[size-1];
 
-
         memcpy(new_num,num,pos*sizeof(int));
         copy(&data[0],&data[pos-1], new_data);
 
-        //Copying to new arrays (one-less-cell-sized) data[] and num[]
-        /*for(int i = 0; i<pos; i++) {
-             new_data[i] = data[i];
-         }*/
-
-        memcpy((new_num+(pos)*sizeof(int)),(num+(pos+1)*sizeof(int)),(size-1)*sizeof(int));
-        copy(&data[pos+1],&data[size-1], new_data+pos*sizeof(string));
-
-        /*for(int i = pos; i < size-1; i++) {
+        for(int i = pos; i < size-1; i++) {
+            new_num[i] = num[i+1];
             new_data[i] = data[i+1];
-        }*/
-
+        }
         size--;
         delete[] data;
         delete[] num;
