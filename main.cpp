@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
 
-    string filename = "../gutenberg.txt";
+    string filename = "../small-file.txt";
 
 
     hashTable HashTable(1000000); //small-file: ideal about 5k //gutenberg: 1.000.000
