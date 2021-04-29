@@ -12,9 +12,10 @@ using namespace std::chrono;
 
 int main() {
 
-    string filename = "../gutenberg.txt";
+    string filename = "../gutenberg.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
 
-    hashTable HashTable(1000000); //small-file: ideal about 5k //gutenberg: 1.000.000
+    //Declaring variables for each data structure (Uninitialized)
+    hashTable HashTable(1000000); //small-file: ideal about 5.000 //gutenberg: 1.000.000
     UnorderedArray unorderedArray;
     orderedArray OrderedArray;
     BSTree BinaryTree;

@@ -89,14 +89,25 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     string words[searchCount];
     int value;
     srand(searchCount);
-    for (int i = 0; i < searchCount; ++i) {
+    for (int i = 0; i < searchCount; ++i) {         //Filling a Q-sized array with randomly chosen words
         value = rand() % searchCount;
         words[i] = unorderedArray.getData(value);
     }
 
+    //Initializing timing
     auto begin = high_resolution_clock::now(), end = high_resolution_clock::now() ;
     duration<double, milli> elapsed = end - begin;
     long count;
+
+    /*
+     * Calculating the time to search all Q randomly picked words in each structure.
+     * count    : Counts the words returned, useful in order to validate the results
+     * begin    : Timestamp at the start of the search
+     * for loop : Iterating through every word in words (initialized earlier) and doing a search for it in each
+     * structure, increasing count by the return value.
+     * end      : Timestamp at the end of the search
+     * elapsed  : Time between end and begin in milliseconds.
+     */
 
     count = 0;
     begin = high_resolution_clock::now();
