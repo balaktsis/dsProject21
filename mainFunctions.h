@@ -71,7 +71,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 
 
 
-        string searchword = "legal";
+        string searchword = "ferrari";
         printf("\"%s\" appeared %d times in the Hash Table.\n", searchword.c_str(), HashTable.search(searchword));
         int pos, appearances;
         unorderedArray.Search(searchword, pos, appearances);
