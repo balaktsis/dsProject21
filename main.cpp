@@ -1,8 +1,4 @@
-#include <iostream>
-#include <fstream>
 #include <string>
-//#include <ctime>
-#include <chrono>
 #include "mainFunctions.h"
 
 
@@ -26,6 +22,8 @@ int main() {
     printf("Filling up the arrays...\n");
     double count = initStructures(filename, unorderedArray, HashTable, OrderedArray, BinaryTree);
 
+
+    //Search benchmark (first parameter being the random word count - Q)
     timeQSearches(10000, unorderedArray, HashTable, OrderedArray, BinaryTree);
 
 }

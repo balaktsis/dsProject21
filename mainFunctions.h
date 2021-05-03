@@ -47,7 +47,8 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
                 continue;
             }
             count++;
-            if (HashTable.insert(word)) {           //Inserting words into the hashtable; returns true if the word is unique.
+            if (count%25000000 == 0){ printf("%ld words read...\n"), count/25000000;}
+            if (HashTable.insert(word)) {                //Inserting words into the hashtable; returns true if the word is unique.
                                                          //If it's not unique, it increments it's internal occurrence counter.
                 uniqueCount++;
                 unorderedArray.insertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
@@ -109,6 +110,7 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
      * elapsed  : Time between end and begin in milliseconds.
      */
 
+    //Timing for the Unordered Array
     count = 0;
     begin = high_resolution_clock::now();
     for (int i = 0; i < searchCount; ++i) {count += unorderedArray.search(words[i]);}
@@ -116,6 +118,7 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     elapsed = end - begin;
     cout<<"Searching "<<searchCount<<" words in the Unordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
+    //Timing for the Ordered Array
     count = 0;
     begin = high_resolution_clock::now();
     for (int i = 0; i < searchCount; ++i) {count += OrderedArray.search(words[i]);}
@@ -123,6 +126,7 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     elapsed = end - begin;
     cout<<"Searching "<<searchCount<<" words in the Ordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
+    //Timing for the Binary Search Tree
     count = 0;
     begin = high_resolution_clock::now();
     for (int i = 0; i < searchCount; ++i) {count += BinaryTree.search(words[i]);}
@@ -131,13 +135,15 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     cout<<"Searching "<<searchCount<<" words in the Binary Search Tree yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
 //      ------ Reserved for the AVL tree -----
+//    //Timing for the AVL tree
 //    count = 0;
 //    begin = high_resolution_clock::now();
-//    for (int i = 0; i < searchCount; ++i) {count += BinaryTree.search(words[i]);}
+//    for (int i = 0; i < searchCount; ++i) {count += avlTree.search(words[i]);}
 //    end = high_resolution_clock::now();
 //    elapsed = end - begin;
-//    cout<<"Searching "<<searchCount<<" words in the Ordered Array yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+//    cout<<"Searching "<<searchCount<<" words in the AVL tree yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
+    //Timing for the Hash Table
     count = 0;
     begin = high_resolution_clock::now();
     for (int i = 0; i < searchCount; ++i) {count += HashTable.search(words[i]);}

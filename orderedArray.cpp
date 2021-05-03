@@ -95,11 +95,9 @@ bool orderedArray::binSearch(const string &word, long &pos) {       //Implementa
 
 }
 
-void
-orderedArray::insert(const string &word) {                   //Insert single word into array/Increment if already in.
+void orderedArray::insert(const string &word) {                      //Insert single word into array/Increment if already in.
 
-    if (size ==
-        0) {                                                 //If the array is empty, initializing with one cell.
+    if (size == 0) {                                                 //If the array is empty, initializing with one cell.
         size++;
         data = new string[size];
         num = new int[size];
@@ -109,16 +107,13 @@ orderedArray::insert(const string &word) {                   //Insert single wor
     }
 
     long pos;                                                 //Check if the word already exists in array.
-    if (binSearch(word,
-                  pos)) {                                  //If the search returns true, it's appearance num gets incremented.
+    if (binSearch(word, pos)) {                            //If the search returns true, it's appearance num gets incremented.
         num[pos] += 1;
         return;
     }
 
-    string *newData = new string[size +
-                                 1];                           //Initializing a temporary 2nd array with n+1 cells
-    int *newNum = new int[size +
-                          1];                                  //Then all the cells up to where the new word should be placed
+    string *newData = new string[size + 1];                    //Initializing a temporary 2nd array with n+1 cells
+    int *newNum = new int[size + 1];                           //Then all the cells up to where the new word should be placed
     copy(&data[0], &data[pos], newData);              //are copied over. After that, the word gets inserted
     copy(&num[0], &num[pos], newNum);                 //and the rest of the cells are copied over, 1 position after
     newData[pos + 1] = word;
@@ -135,8 +130,7 @@ orderedArray::insert(const string &word) {                   //Insert single wor
 
 }
 
-void
-orderedArray::insertUnique(const string& word, const int occurrences) {         //Identical to insert, but takes a set
+void orderedArray::insertUnique(const string& word, const int occurrences) {    //Identical to insert, but takes a set
                                                                                 //amount of occurrences, instead of
     if (size == 0) {                                                            //manually incrementing.
         size++;
