@@ -12,6 +12,7 @@ UnorderedArray::UnorderedArray() {
     num = nullptr;
     size = 0;
     current_size = 0;
+	step = 5000;
 }
 
 void UnorderedArray::insert(const string &word) {           //Inserts a new word in the array, after checking its existence
