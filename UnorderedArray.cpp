@@ -18,7 +18,7 @@ UnorderedArray::UnorderedArray() {
 void UnorderedArray::insert(const string &word) {           //Inserts a new word in the array, after checking its existence
     long pos;
     if (!Search_help(word,pos)) {
-        size++;                                             //Updates size of array and reallocates its content to an extended array
+       /* size++;
         if (data != nullptr) {
             string *new_data;
             int *new_num;
@@ -29,9 +29,9 @@ void UnorderedArray::insert(const string &word) {           //Inserts a new word
             memcpy(new_num,num,(size-1)*sizeof(int));
             copy(&data[0],&data[size-2] , new_data);
 
-            /*for (int i = 0; i < size - 1; i++) {
-                new_data[i] = data[i];
-            }*/
+            //for (int i = 0; i < size - 1; i++) {
+              //  new_data[i] = data[i];
+            //}
             delete[] data;
             delete[] num;
             data = new_data;
@@ -47,8 +47,11 @@ void UnorderedArray::insert(const string &word) {           //Inserts a new word
             delete[] num;
             num = new_num;
         }
-        data[size - 1] = word;
-        num[size - 1] = 1;
+
+        data[current_size] = word;
+        num[current_size] = 1;
+        */
+        insertUnique(word,1);
     }
     else {
         num[pos]++;
@@ -98,7 +101,7 @@ int UnorderedArray::search(const string &word) {
         return 0;
     }
     else {
-        for(long i = 0; i < size; i++) {
+        for(long i = 0; i <= current_size; i++) {
             if(data[i] == word) {
                 return num[i];
             }
@@ -112,7 +115,7 @@ bool UnorderedArray::Search_help(const string &word, long &pos) {
         return false;
     }
     else {
-        for(long i = 0; i < size; i++) {
+        for(long i = 0; i <= current_size; i++) {
             if(data[i] == word) {
                 pos = i;
                 return true;
