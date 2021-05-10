@@ -65,27 +65,23 @@ void UnorderedArray::insertUnique(const string &word, int m) {
         new_data = new string[size+step];
         new_num = new int[size+step];
 
-        memcpy(new_num,num,(size)*sizeof(int));
         copy(&data[0],&data[size-1], new_data);
         copy(&num[0],&num[size-1], new_num);
-        /*for (int i = 0; i < size - 1; i++) {
-             new_data[i] = data[i];
-         }*/
+
         delete[] data;
         delete[] num;
         data = new_data;
         num = new_num;
         current_size = size;
         size+=step;
-        //current_size++;
-    }
+        }
     else if(data == nullptr) {
         string *new_data;
         int *new_num;
         new_num = new int[step];
         new_data = new string[step];
         current_size = 0;
-        size = 1;
+        size = step;
         delete[] data;
         data = new_data;
         delete[] num;
@@ -137,7 +133,6 @@ bool UnorderedArray::deleteWord(const string &word) {               //Deletes an
         new_data = new string[size-1];
         new_num = new int[size-1];
 
-        memcpy(new_num,num,pos*sizeof(int));
         copy(&data[0],&data[pos-1], new_data);
         copy(&num[0],&num[pos-1], new_num);
         //Copying to new arrays (one-less-cell-sized) data[] and num[]
