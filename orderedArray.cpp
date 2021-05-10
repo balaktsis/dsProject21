@@ -1,7 +1,7 @@
 //
 // Created by Neron on 24/4/2021.
 //
-
+#include <iostream>
 #include "orderedArray.h"
 #include <string>
 
@@ -60,6 +60,11 @@ void orderedArray::copyFromUnordered(string *newData, int *newNum, long arraySiz
     this->size = arraySize;                                                             //and keep it in relation to an int array
     this->data = new string[size];
     this->num = new int[size];
+    if (size == 1){
+        this->data[0] = newData[0];
+        this->num[0] = newNum[0];
+        return;
+    }
     copy(&newData[0], &newData[arraySize - 1], this->data);                     //Copy two arrays passed by reference locally
     copy(&newNum[0], &newNum[arraySize - 1], this->num);
     quicksort(0, size - 1);
@@ -71,14 +76,16 @@ bool orderedArray::binSearch(const string &word, long &pos) {       //Implementa
         pos = 0;
         return false;
     }
+    if (data[0] == word){
+        pos = 0;
+        return true;
+    }
 
 
-    long begin = 0, end =
-            size - 1;                                       //Initializing the pointers to the front, middle and end.
+    long begin = 0, end = size - 1;                         //Initializing the pointers to the front, middle and end.
     long mid = (begin + end) / 2;
 
-    while (begin <=
-           mid) {                                           //Main loop, checking where the sought-after word is in
+    while (begin <= mid && end >= mid){                     //Main loop, checking where the sought-after word is in
         if (word > data[mid]) {                             //relation to the mid pointer.
             begin = mid + 1;                                //Depending on that, the array is divided.
         } else if (data[mid] == word) {
@@ -198,7 +205,7 @@ void orderedArray::remove(const string &word) {      //The insert algorithm in r
     num = newNum;
 }
 
-int orderedArray::getSize() const {
+long orderedArray::getSize() const {
     return size;
 }
 

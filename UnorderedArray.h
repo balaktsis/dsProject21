@@ -22,7 +22,7 @@ public:
     void insertUnique(const string &, int);         //Inserts a word in array (takes word and number of appearances).
     int search(const string &);      				//Searches for a given word and returns (by ref.) position and number of appearances; true := word exists
     bool deleteWord(const string &);                //Deletes a word of the array (if deletion's completed, returns true)
-    int getSize() const;                            //Returns the size of the two arrays
+    long getSize() const;                           //Returns the size of the two arrays
     int getNum(long) const;                         //Returns num[pos]
     string getData(long) const;                     //Returns data[pos]
 

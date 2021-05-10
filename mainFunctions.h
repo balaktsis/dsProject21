@@ -36,6 +36,12 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
     string *wordsHolder;
     int *numsHolder;
 
+    // Timing
+    auto begin = high_resolution_clock::now(), end = high_resolution_clock::now() ;
+    duration<double> elapsed = end - begin;
+
+
+
     ifstream ifs;
     ifs.open(filename);
     if (ifs.is_open()) {
@@ -51,9 +57,12 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
             if (HashTable.insert(word)) {                //Inserting words into the hashtable; returns true if the word is unique.
                                                          //If it's not unique, it increments it's internal occurrence counter.
                 uniqueCount++;
-                unorderedArray.insertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
+//                unorderedArray.insertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
             }                                            //We'll use it as a lookup table later. So occurrences are 0.
             BinaryTree.insert(word);
+            unorderedArray.insert(word);
+//            OrderedArray.insert(word);
+
         }
         ifs.close();
 
@@ -72,12 +81,20 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
         for (long i = 0; i < uniqueCount; ++i) {
             wordsHolder[i] = unorderedArray.getData(i);
             numsHolder[i] = HashTable.search(wordsHolder[i]);
-            unorderedArray.setNum(i, numsHolder[i]);
+//            unorderedArray.setNum(i, numsHolder[i]);
         }
+
         OrderedArray.copyFromUnordered(wordsHolder, numsHolder, uniqueCount);
+
+        end = high_resolution_clock::now();
+        elapsed = end - begin;
+        cout<<"Filled up the structures in: "<<elapsed.count()<<"s"<<endl;
 
         printf("Unique words: %ld.\n", uniqueCount);
         printf("Total words: %ld.\n", count);
+
+        cout<<"Size of unordered: "<<unorderedArray.getSize()<<endl;
+        cout<<"Size of Ordered: "<<OrderedArray.getSize()<<endl;
 
 
     } else
@@ -93,6 +110,7 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     for (int i = 0; i < searchCount; ++i) {         //Filling a Q-sized array with randomly chosen words
         value = rand() % searchCount;
         words[i] = unorderedArray.getData(value);
+//        words[i] = unorderedArray.getData(i);
     }
 
     //Initializing timing

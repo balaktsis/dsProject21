@@ -4,7 +4,6 @@
 
 #include "UnorderedArray.h"
 #include <string>
-#include <cstring>
 
 
 UnorderedArray::UnorderedArray() {
@@ -68,6 +67,7 @@ void UnorderedArray::insertUnique(const string &word, int m) {
 
         memcpy(new_num,num,(size)*sizeof(int));
         copy(&data[0],&data[size-1], new_data);
+        copy(&num[0],&num[size-1], new_num);
         /*for (int i = 0; i < size - 1; i++) {
              new_data[i] = data[i];
          }*/
@@ -139,6 +139,7 @@ bool UnorderedArray::deleteWord(const string &word) {               //Deletes an
 
         memcpy(new_num,num,pos*sizeof(int));
         copy(&data[0],&data[pos-1], new_data);
+        copy(&num[0],&num[pos-1], new_num);
         //Copying to new arrays (one-less-cell-sized) data[] and num[]
 
         for(long i = pos; i < size-1; i++) {
@@ -159,8 +160,8 @@ UnorderedArray::~UnorderedArray() {
     delete[] data;
 }
 
-int UnorderedArray::getSize() const {
-    return size;
+long UnorderedArray::getSize() const {
+    return current_size;
 }
 
 int UnorderedArray::getNum(long pos) const {
