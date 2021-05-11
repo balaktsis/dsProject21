@@ -134,7 +134,7 @@ void BSTree::deleteBST(BTNode *tNode) {
 void BSTree::inOrder(BTNode * tNode) {
     if (tNode != nullptr) {
         inOrder(tNode->left);
-        cout << tNode->data << " ";
+        cout << tNode->data << " : " << tNode->num << endl;
         inOrder(tNode->right);
     }
 }
@@ -142,7 +142,7 @@ void BSTree::inOrder(BTNode * tNode) {
 void BSTree::preOrder(BTNode * tNode)
 {
     if (tNode != nullptr) {
-        cout << tNode->data << " ";
+        cout << tNode->data << " : " << tNode->num << endl;
         preOrder(tNode->left);
         preOrder(tNode->right);
     }
@@ -152,7 +152,7 @@ void BSTree::postOrder(BTNode * tNode) {
     if (tNode != nullptr) {
         postOrder(tNode->left);
         postOrder(tNode->right);
-        cout << tNode->data << " ";
+        cout << tNode->data << " : " << tNode->num << endl;
     }
 }
 

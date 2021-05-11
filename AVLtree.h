@@ -4,10 +4,23 @@
 
 #ifndef TEST_AVLTREE_H
 #define TEST_AVLTREE_H
+#include "BSTree.h"
+#include <string>
 
-
-class AVLtree {
-
+class AVLtree : public BSTree {
+protected:
+    long difference(BTNode *);
+    BTNode * balance(BTNode *);
+    BTNode * rr_rotate(BTNode *);
+    BTNode * ll_rotate(BTNode *);
+    BTNode * rl_rotate(BTNode *);
+    BTNode * lr_rotate(BTNode *);
+    BTNode * insertAVL(BTNode *, string &);
+public:
+    AVLtree();
+    ~AVLtree();
+    void insert(string &);
+    bool deleteWord(const string &);
 };
 
 
