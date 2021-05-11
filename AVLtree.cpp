@@ -3,12 +3,12 @@
 //
 
 #include "AVLtree.h"
+#include <iostream>
 
-AVLtree::AVLtree():BSTree() {}
-
-AVLtree::~AVLtree() {
-    deleteBST();
+AVLtree::AVLtree() {
+    root = nullptr;
 }
+
 
 long AVLtree::difference(BTNode *node) {
     long l_height = BSTree::getHeight(node->left);
@@ -17,75 +17,87 @@ long AVLtree::difference(BTNode *node) {
     return b_factor;
 }
 
-BTNode * AVLtree::rr_rotate(BTNode *parent) {
+void AVLtree::rr_rotate(BTNode *parent) {
     BTNode *temp;
     temp = parent->right;
     parent->right = temp->left;
     temp->left = parent;
-    return temp;
 }
 
-BTNode * AVLtree::ll_rotate(BTNode *parent) {
+void AVLtree::ll_rotate(BTNode *parent) {
     BTNode *temp;
     temp = parent->left;
     parent->left = temp->right;
     temp->right = parent;
-    return temp;
 }
 
-BTNode * AVLtree::lr_rotate(BTNode *parent) {
+void AVLtree::lr_rotate(BTNode *parent) {
     BTNode *temp;
     temp = parent->left;
-    parent->left = rr_rotate(temp);
-    return ll_rotate(parent);
+    rr_rotate(temp);
+    ll_rotate(parent);
 }
 
-BTNode * AVLtree::rl_rotate(BTNode *parent) {
+void AVLtree::rl_rotate(BTNode *parent) {
     BTNode *temp;
     temp = parent->right;
-    parent->right = ll_rotate(temp);
-    return rr_rotate(parent);
+    ll_rotate(temp);
+    rr_rotate(parent);
 }
 
-BTNode * AVLtree::balance(BTNode *temp) {
+void AVLtree::balance(BTNode *temp) {
     int bal_factor = difference(temp);
     if (bal_factor > 1) {
         if (difference(temp->left) > 0)
-            temp = ll_rotate(temp);
+            ll_rotate(temp);
         else
-            temp = lr_rotate(temp);
+            lr_rotate(temp);
     }
     else
-        if (bal_factor < -1) {
-            if (difference(temp->right) > 0)
-                temp = rl_rotate(temp);
-            else
-                temp = rr_rotate(temp);
+    if (bal_factor < -1) {
+        if (difference(temp->right) > 0)
+            rl_rotate(temp);
+        else
+            rr_rotate(temp);
     }
-    return temp;
 }
 
 void AVLtree::insert(string &word) {
-    root = insertAVL(root, word);
+    insertAVL(root, word);
 }
 
-
-BTNode * AVLtree::insertAVL(BTNode *r, string &v) {
-    if (r == nullptr) {
-        r = new BTNode;
-        r->data = v;
-        r->num = 1;
-        r->left = nullptr;
-        r->right = nullptr;
-        return r;
-    } else if (v< r->data) {
-        r->left = insertAVL(r->left, v);
-        r = balance(r);
-    } else if (v > r->data) {
-        r->right = insertAVL(r->right, v);
-        r = balance(r);
-    } else {
-        r->num += 1;
+void AVLtree::insertAVL(BTNode *tNode, string &data) {
+    if (tNode == nullptr) {
+        tNode = new BTNode(data);
+        root = tNode;
+        balance(tNode);
     }
-    return r;
+    else {
+        if (data == tNode->data) {
+            tNode->num += 1;
+        }
+        else {
+            if (data < tNode->data) {
+                if (tNode->left == nullptr) {
+                    BTNode *temp = new BTNode(data);
+                    tNode->left = temp;
+                    balance(tNode);
+                }
+                else {
+                    insertAVL(tNode->left, data);
+                }
+            }
+            else {
+                if (tNode->right == nullptr) {
+                    BTNode *temp = new BTNode(data);
+                    tNode->right = temp;
+                    balance(tNode);
+
+                }
+                else {
+                    insertAVL(tNode->right, data);
+                }
+            }
+        }
+    }
 }
