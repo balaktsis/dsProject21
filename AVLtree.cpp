@@ -101,3 +101,49 @@ void AVLtree::insertAVL(BTNode *tNode, string &data) {
         }
     }
 }
+
+bool AVLtree::deleteWord(string &word) {
+    BTNode *p = root;                                     //Search pointer.
+    BTNode *pp = nullptr;                                 //Parent of p.
+    while(p && p->data != word) {
+        pp = p;
+        if(word < p-> data) {
+            p = p->left;
+        }
+        else {
+            p = p->right;
+        }
+    }
+    if(!p)                                              //Node not found.
+        return false;
+    //Handling case when p has 2 children.
+    if(p->left && p->right) {
+        BTNode *s = p->left;
+        BTNode *ps = p;                                 //Parent of s.
+        while (s->right) {
+            ps = s;
+            s = s->right;
+        }
+        p->data = s->data;
+        p = s;
+        pp = ps;
+        BTNode *c;
+        if (p->left)
+            c = p->left;
+        else
+            c = p->right;
+        //Delete node p.
+        if (p == root)
+            root = c;
+        else if (p == pp->left){
+            pp->left = c;
+            balance(pp);
+        }
+        else {
+            pp->right = c;
+            balance(pp);
+        }
+    }
+    delete p;
+    return true;
+}
