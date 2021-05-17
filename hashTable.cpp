@@ -3,62 +3,9 @@
 //
 
 #include "hashTable.h"
+#include <cmath>
+using namespace std;
 
-
-
-/*
- *  N O D E S !
- */
-
-Node::Node(string word, int occurrences) {   // Constructor for the Node class
-    this->word = std::move(word);
-    this->occurrences = occurrences;
-}
-
-
-/*
- *  L I S T !
- */
-
-void list::insertUnique(const string& word, int occurrences) {   //Node insertion algorithm; Finds the end of the Node chain and
-    if (len == 0) {                                       //initializes a new node at the end. Also iterates the len variable
-        first = new Node(word, occurrences);
-    } else {
-        Node *accessedNode = first;
-        for (int i = 0; i < len - 1; ++i) {
-            accessedNode = accessedNode->next;
-        }
-        accessedNode->next = new Node(word, occurrences);
-    }
-    len++;
-}
-
-bool list::insert(const string& word) {               //Insert a word if doesn't exist, iterate occurrences if it does.
-    if(!list::search(word)) {
-        insertUnique(word, 1);
-        return true;
-    } else {
-        Node *accessedNode = first;
-        while(accessedNode->word != word) {
-            accessedNode = accessedNode->next;
-        }
-        accessedNode->occurrences++;
-        return false;
-    }
-}
-
-int list::search(const string& word) {                //Iterate through all the Nodes in the list to find a certain string.
-    Node *accessedNode = first;                //If the string isn't found it'll return 0.
-
-    while (accessedNode != nullptr) {
-        if (accessedNode->word == word) {
-            return accessedNode->occurrences;
-        }
-        accessedNode = accessedNode->next;
-    }
-
-    return 0;                                 //This point will be reached only if the word isn't found.
-}
 
 
 /*
@@ -66,42 +13,129 @@ int list::search(const string& word) {                //Iterate through all the 
  *  hash-ta la vista ;)
  */
 
-hashTable::hashTable() {
-    this->table = new list[size];
-}
-
-hashTable::hashTable(long size) {
-    this->size = size;
-    this->table = new list[size];
-}
-
-int hashTable::stringToHash(const string& word) const {      //Implementation of a polynomial hash function
+long hashTable::stringToHash(const string word, long max) const{         //Implementation of a polynomial hash function
 
     int prime = 31, seed = 1;
-    long m = size;
-    int hash_val = 0;
+    long m = max;
+    long hash_val = 0;
 
-    for (char i : word) {                      //Iterating through the chars in the word
+    for (char i : word) {                                       //Iterating through the chars in the word
         hash_val = (hash_val + (i + 1 - 'a') * seed) % m;
         seed = (seed * prime) % m;
     }
     return hash_val;
 }
 
-int hashTable::search(const string& word) {
-    int key = stringToHash(word);
-    return table[key].len ? table[key].search(word) : 0;
-}
+bool hashTable::insert(const string word) {
+    long key = stringToHash(word, size);
 
-void hashTable::insertUnique(const string& word, int occurrences) {
-    if (search(word)) {                    //Check if the word exists already
-        return;
+    for (int i = key; i < size; ++i) {
+        D:
+        if (table[i].occurrences && table[i].word == word){
+            table[i].occurrences += 1;
+            return false;
+        } else if (table[i].occurrences == 0){
+            table[i].word = word;
+            table[i].occurrences = 1;
+            occupied++;
+            break;
+        }
+
+        if (i == size-1){
+            i = 0;
+            goto D;
+        }
     }
-    int key = stringToHash(word);       //If the code reaches here, the word doesn't exist, so a key is generated
-    table[key].insertUnique(word, occurrences);//and inserted in the appropriate spot on the table
+
+
+
+    if (size - expand_threshold == occupied){
+        expandAndRehash();
+    }
+
+    return true;
+
 }
 
-bool hashTable::insert(const string& word) {
-    int key = stringToHash(word);
-    return table[key].insert(word);
+
+bool hashTable::insertUnique(string word, int occurrences) {
+    long key = stringToHash(word, size);
+
+    for (int i = key; i < size; ++i) {
+        C:
+        if (table[i].occurrences && table[i].word == word){
+            table[i].occurrences = occurrences;
+            return false;
+        } else if (table[i].occurrences == 0){
+            table[i].word = word;
+            table[i].occurrences = occurrences;
+            occupied++;
+            break;
+        }
+
+        if (i == size-1){
+            i = 0;
+            goto C;
+        }
+    }
+
+
+
+    if (size - expand_threshold == occupied){
+        expandAndRehash();
+    }
+
+    return true;
 }
+
+
+
+int hashTable::search(const string word) {
+    long key = stringToHash(word, size);
+    char overflow = 0;
+
+    for (int i = key; i < size; ++i) {
+        B:
+        if (table[i].word == word && table[i].occurrences){
+            return table[i].occurrences;
+        } else if (table[i].occurrences == 0){
+            return 0;
+        }
+        if (i == size-1 && !overflow){
+            i = 0;
+            overflow = 1;
+            goto B;
+        }
+        if (overflow && i == key){         //Once the linear search completes a loop through the array, without finding
+            return 0;                       //the key, 0 (not found) is returned.
+        }
+
+    }
+    return 0;
+}
+
+void hashTable::expandAndRehash() {
+
+    long oldSize = size;
+    size = size*2;
+    update_threshold();
+    occupied = 0;
+
+
+    Cell *oldTable = table;
+    table = new Cell[size];
+
+    for (int i = 0; i < oldSize; ++i) {
+        if (oldTable[i].occurrences == 0){       //Skip vacant cells
+            continue;
+        }
+
+        insertUnique(oldTable[i].word, oldTable[i].occurrences);
+
+    }
+
+    delete[] oldTable;
+
+}
+
+

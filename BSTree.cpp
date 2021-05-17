@@ -83,7 +83,7 @@ bool BSTree::deleteWord(string &word) {
             p = p->right;
         }
     }
-    if(!p)                                              //Node not found.
+    if(!p)                                              //Cell not found.
         return false;
     //Handling case when p has 2 children.
     if(p->left && p->right) {

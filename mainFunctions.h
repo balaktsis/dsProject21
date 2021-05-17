@@ -8,6 +8,7 @@
 #include "hashTable.h"
 #include "orderedArray.h"
 #include "BSTree.h"
+#include "AVLtree.h"
 
 #ifndef TEST_MAINFUNCTIONS_H
 #define TEST_MAINFUNCTIONS_H
@@ -29,7 +30,7 @@ string wordStrip(const string &word) {
     return temp;
 }
 
-long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree) {
+long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLtree AvlTree) {
     long count = 0;
     long uniqueCount = 0;
     string word;
@@ -53,19 +54,24 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
                 continue;
             }
             count++;
-            if (count%25000000 == 0){ printf("%ld words read...\n"), count/25000000;}
-            if (HashTable.insert(word)) {                //Inserting words into the hashtable; returns true if the word is unique.
-                                                         //If it's not unique, it increments it's internal occurrence counter.
-                uniqueCount++;
+//            if (count%25000000 == 0){ printf("%ld words read...\n"), count/25000000;}
+//            cout<<word<<endl;
+//            if (HashTable.insert(word)) {                //Inserting words into the hashtable; returns true if the word is unique.
+//                                                         //If it's not unique, it increments it's internal occurrence counter.
+//                uniqueCount++;
+//                cout<<word<<endl;
 //                unorderedArray.insertUnique(word, 0);    //Initializing the unordered array, just with the unique words.
-            }                                            //We'll use it as a lookup table later. So occurrences are 0.
+//            }                                              //We'll use it as a lookup table later. So occurrences are 0.
+            HashTable.insert(word);
             BinaryTree.insert(word);
             unorderedArray.insert(word);
-//            OrderedArray.insert(word);
+            OrderedArray.insert(word);
+            AvlTree.insert(word);
 
         }
         ifs.close();
 
+        uniqueCount = HashTable.getSize();
 
         wordsHolder = new string[uniqueCount];
         numsHolder = new int[uniqueCount];
@@ -78,13 +84,13 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
          *  Now it takes approximately 100 seconds to fill both the hashtable and the unordered array. Just 4s increase over
          *  just filling the hashtable.
          */
-        for (long i = 0; i < uniqueCount; ++i) {
-            wordsHolder[i] = unorderedArray.getData(i);
-            numsHolder[i] = HashTable.search(wordsHolder[i]);
-//            unorderedArray.setNum(i, numsHolder[i]);
-        }
 
-        OrderedArray.copyFromUnordered(wordsHolder, numsHolder, uniqueCount);
+//        for (long i = 0; i < uniqueCount; ++i) {
+//            wordsHolder[i] = unorderedArray.getData(i);
+//            numsHolder[i] = HashTable.search(wordsHolder[i]);
+//        }
+
+//        OrderedArray.copyFromUnordered(wordsHolder, numsHolder, uniqueCount);
 
         end = high_resolution_clock::now();
         elapsed = end - begin;
@@ -93,8 +99,10 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
         printf("Unique words: %ld.\n", uniqueCount);
         printf("Total words: %ld.\n", count);
 
-        cout<<"Size of unordered: "<<unorderedArray.getSize()<<endl;
+        cout<<"Size of Unordered: "<<unorderedArray.getSize()<<endl;
         cout<<"Size of Ordered: "<<OrderedArray.getSize()<<endl;
+        cout<<"Size of Hash Table: "<<HashTable.getSize()<<endl;
+
 
 
     } else
@@ -103,7 +111,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
     return count;
 }
 
-void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree){
+void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLtree AvlTree){
     string words[searchCount];
     int value;
     srand(searchCount);
@@ -152,14 +160,14 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
     elapsed = end - begin;
     cout<<"Searching "<<searchCount<<" words in the Binary Search Tree yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
-//      ------ Reserved for the AVL tree -----
-//    //Timing for the AVL tree
-//    count = 0;
-//    begin = high_resolution_clock::now();
-//    for (int i = 0; i < searchCount; ++i) {count += avlTree.search(words[i]);}
-//    end = high_resolution_clock::now();
-//    elapsed = end - begin;
-//    cout<<"Searching "<<searchCount<<" words in the AVL tree yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+
+    //Timing for the AVL tree
+    count = 0;
+    begin = high_resolution_clock::now();
+    for (int i = 0; i < searchCount; ++i) {count += AvlTree.search(words[i]);}
+    end = high_resolution_clock::now();
+    elapsed = end - begin;
+    cout<<"Searching "<<searchCount<<" words in the AVL tree yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
 
     //Timing for the Hash Table
     count = 0;

@@ -85,7 +85,7 @@ bool orderedArray::binSearch(const string &word, long &pos) {       //Implementa
     long begin = 0, end = size - 1;                         //Initializing the pointers to the front, middle and end.
     long mid = (begin + end) / 2;
 
-    while (begin <= mid && end >= mid){                     //Main loop, checking where the sought-after word is in
+    while (begin <= end){                                   //Main loop, checking where the sought-after word is in
         if (word > data[mid]) {                             //relation to the mid pointer.
             begin = mid + 1;                                //Depending on that, the array is divided.
         } else if (data[mid] == word) {
