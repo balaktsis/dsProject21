@@ -11,10 +11,6 @@ BSTree::BSTree() {
     root = nullptr;
 }
 
-BSTree::~BSTree() {
-    deleteBST();
-}
-
 void BSTree::insert(string &data) {
     insert(root,data);
 }
