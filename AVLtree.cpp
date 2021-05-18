@@ -102,7 +102,7 @@ void AVLtree::insertAVL(BTNode *tNode, string &data) {
     }
 }
 
-bool AVLtree::deleteWord(string &word) {
+bool AVLtree::deleteWord(const string &word) {
     BTNode *p = root;                                     //Search pointer.
     BTNode *pp = nullptr;                                 //Parent of p.
     while(p && p->data != word) {
@@ -147,3 +147,4 @@ bool AVLtree::deleteWord(string &word) {
     delete p;
     return true;
 }
+

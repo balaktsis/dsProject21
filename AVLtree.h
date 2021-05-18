@@ -19,7 +19,7 @@ protected:
 public:
     AVLtree();
     void insert(string &);
-    bool deleteWord(string &);
+    bool deleteWord(const string &);
 };
 
 
