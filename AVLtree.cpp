@@ -123,7 +123,7 @@ void avl_tree::postorder(avl *t) {
 }
 
 int avl_tree::search(string &word) {
-    avl *p = r;                                     //Search pointer.
+    avl *p = r;                                     //Search pointer
     while (p) {
         if (word < p->s) {
             p = p->l;
