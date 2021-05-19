@@ -10,21 +10,20 @@
 #define TEST_HASHTABLE_H
 using namespace std;
 
-/*
- *  N O D E S !
- */
-class Cell {
-public:
-
-    string word;                                      //The word that is stored
-    int occurrences = 0;                              //Int containing the appearances of a word (set externally)
-};
 
 /*
  *  H A S H E S
  */
 class hashTable {                                   //Implementation of chain hashing
 private:
+
+    class Cell {
+    public:
+
+        string word;                                      //The word that is stored
+        int occurrences = 0;                              //Int containing the appearances of a word (set externally)
+    };
+
     long size = 256;                                //Size of the hash table
     Cell *table = new Cell[size];                   //Array of subarrays
     long occupied = 0;

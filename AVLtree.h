@@ -7,20 +7,32 @@
 #include "BSTree.h"
 #include <string>
 
-class AVLtree : public BSTree {
-protected:
-    long difference(BTNode *);
-    void balance(BTNode *);
-    void rr_rotate(BTNode *);
-    void ll_rotate(BTNode *);
-    void rl_rotate(BTNode *);
-    void lr_rotate(BTNode *);
-    void insertAVL(BTNode *, string &);
-public:
-    AVLtree();
-    void insert(string &);
-    bool deleteWord(string &);
+struct avl {
+    int d;
+    string s;
+    struct avl *l;
+    struct avl *r;
 };
-
-
+class avl_tree {
+private:
+    avl *r;
+public:
+    long height(avl *);
+    long difference(avl *);
+    avl *rr_rotat(avl *);
+    avl *ll_rotat(avl *);
+    avl *lr_rotat(avl*);
+    avl *rl_rotat(avl *);
+    avl * balance(avl *);
+    avl * insert(avl*, string &);
+    void insert(string &);
+    //void show(avl*, string);
+    void inorder(avl *);
+    void preorder(avl *);
+    void postorder(avl*);
+    avl_tree() {
+        r = NULL;
+    }
+    int search(string &);
+};
 #endif //TEST_AVLTREE_H

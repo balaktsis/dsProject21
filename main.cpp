@@ -11,11 +11,11 @@ int main() {
     string filename = "../medium-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
 
     //Declaring variables for each data structure (Uninitialized)
-    hashTable HashTable; //small-file: ideal about 5.000 //gutenberg: 1.000.000
+    hashTable HashTable;
     UnorderedArray unorderedArray;
     orderedArray OrderedArray;
     BSTree BinaryTree;
-    AVLtree AvlTree;
+    avl_tree AvlTree;
 
 
 

@@ -30,7 +30,7 @@ string wordStrip(const string &word) {
     return temp;
 }
 
-long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLtree AvlTree) {
+long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, avl_tree &AvlTree) {
     long count = 0;
     long uniqueCount = 0;
     string word;
@@ -73,17 +73,8 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 
         uniqueCount = HashTable.getSize();
 
-        wordsHolder = new string[uniqueCount];
-        numsHolder = new int[uniqueCount];
-        /*
-         *  The unordered array is currently filled with all the unique words, but their frequencies aren't calculated yet.
-         *  The hashtable has both, so we loop through every value in the Unordered Array and set it's appearances as the
-         *  return value of a search in the hashtable.
-         *  This significantly cuts down on the time needed to initialize each data structure.
-         *  eg. ~6 hours to fill the unorderedArray AND calculate frequencies using the built-in functions with the large file
-         *  Now it takes approximately 100 seconds to fill both the hashtable and the unordered array. Just 4s increase over
-         *  just filling the hashtable.
-         */
+//        wordsHolder = new string[uniqueCount];
+//        numsHolder = new int[uniqueCount];
 
 //        for (long i = 0; i < uniqueCount; ++i) {
 //            wordsHolder[i] = unorderedArray.getData(i);
@@ -105,13 +96,14 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 
 
 
+
     } else
         cout << "File error" << endl;
 
     return count;
 }
 
-void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLtree AvlTree){
+void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, avl_tree &AvlTree){
     string words[searchCount];
     int value;
     srand(searchCount);

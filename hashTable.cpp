@@ -13,13 +13,13 @@ using namespace std;
  *  hash-ta la vista ;)
  */
 
-long hashTable::stringToHash(const string word, long max) const{         //Implementation of a polynomial hash function
+long hashTable::stringToHash(const string word, long max) const{            //Implementation of a polynomial hash function
 
     int prime = 31, seed = 1;
     long m = max;
     long hash_val = 0;
 
-    for (char i : word) {                                       //Iterating through the chars in the word
+    for (char i : word) {                                                   //Iterating through the chars in the word
         hash_val = (hash_val + (i + 1 - 'a') * seed) % m;
         seed = (seed * prime) % m;
     }

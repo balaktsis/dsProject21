@@ -1,149 +1,139 @@
-//
-// Created by Christos Balaktsis on 11/5/2021.
-//
-
 #include "AVLtree.h"
+#include <string>
 #include <iostream>
+using namespace std;
 
-AVLtree::AVLtree() {
-    root = nullptr;
+void avl_tree::insert(string &word) {
+    r = insert(r,word);
+    // static long i=0;
+    // cout<<"insertion"<<++i<<endl;
 }
 
-
-long AVLtree::difference(BTNode *node) {
-    long l_height = BSTree::getHeight(node->left);
-    long r_height = BSTree::getHeight(node->right);
+long avl_tree::height(avl *t) {
+    long h = 0;
+    if (t != NULL) {
+        long l_height = height(t->l);
+        long r_height = height(t->r);
+        long max_height = max(l_height, r_height);
+        h = max_height + 1;
+    }
+    return h;
+}
+long avl_tree::difference(avl *t) {
+    long l_height = height(t->l);
+    long r_height = height(t->r);
     long b_factor = l_height - r_height;
     return b_factor;
 }
-
-void AVLtree::rr_rotate(BTNode *parent) {
-    BTNode *temp;
-    temp = parent->right;
-    parent->right = temp->left;
-    temp->left = parent;
+avl *avl_tree::rr_rotat(avl *parent) {
+    avl *t;
+    t = parent->r;
+    parent->r = t->l;
+    t->l = parent;
+    //cout<<"Right-Right Rotation";
+    return t;
 }
-
-void AVLtree::ll_rotate(BTNode *parent) {
-    BTNode *temp;
-    temp = parent->left;
-    parent->left = temp->right;
-    temp->right = parent;
+avl *avl_tree::ll_rotat(avl *parent) {
+    avl *t;
+    t = parent->l;
+    parent->l = t->r;
+    t->r = parent;
+    //cout<<"Left-Left Rotation";
+    return t;
 }
-
-void AVLtree::lr_rotate(BTNode *parent) {
-    BTNode *temp;
-    temp = parent->left;
-    rr_rotate(temp);
-    ll_rotate(parent);
+avl *avl_tree::lr_rotat(avl *parent) {
+    avl *t;
+    t = parent->l;
+    parent->l = rr_rotat(t);
+    // cout<<"Left-Right Rotation";
+    return ll_rotat(parent);
 }
-
-void AVLtree::rl_rotate(BTNode *parent) {
-    BTNode *temp;
-    temp = parent->right;
-    ll_rotate(temp);
-    rr_rotate(parent);
+avl *avl_tree::rl_rotat(avl *parent) {
+    avl *t;
+    t = parent->r;
+    parent->r = ll_rotat(t);
+    //cout<<"Right-Left Rotation";
+    return rr_rotat(parent);
 }
-
-void AVLtree::balance(BTNode *temp) {
-    int bal_factor = difference(temp);
+avl *avl_tree::balance(avl *t) {
+    long bal_factor = difference(t);
     if (bal_factor > 1) {
-        if (difference(temp->left) > 0)
-            ll_rotate(temp);
+        if (difference(t->l) > 0)
+            t = ll_rotat(t);
         else
-            lr_rotate(temp);
-    }
-    else
-    if (bal_factor < -1) {
-        if (difference(temp->right) > 0)
-            rl_rotate(temp);
+            t = lr_rotat(t);
+    } else if (bal_factor < -1) {
+        if (difference(t->r) > 0)
+            t = rl_rotat(t);
         else
-            rr_rotate(temp);
+            t = rr_rotat(t);
     }
+    return t;
+}
+avl *avl_tree::insert(avl *r, string &v) {
+    if (r == NULL) {
+        r = new avl;
+        r->s = v;
+        r->l = NULL;
+        r->r = NULL;
+        r->d = 1;
+        return r;
+    } else if (v< r->s) {
+        r->l = insert(r->l, v);
+        r = balance(r);
+    } else if (v > r->s) {
+        r->r = insert(r->r, v);
+        r = balance(r);
+    } else {r->d = r->d+1;}
+    return r;
+}
+/*void avl_tree::show(avl *p, int l) {
+   long i;
+   if (p != NULL) {
+      show(p->r, l+ 1);
+      cout<<" ";
+      if (p == r)
+         cout << "Root -> ";
+      for (i = 0; i < l&& p != r; i++)
+         cout << " ";
+         cout << p->d;
+         show(p->l, l + 1);
+   }
+}*/
+void avl_tree::inorder(avl *t) {
+    if (t == NULL)
+        return;
+    inorder(t->l);
+    cout << t->s << ","<<t->d<<endl;
+    inorder(t->r);
+}
+void avl_tree::preorder(avl *t) {
+    if (t == NULL)
+        return;
+    cout << t->s << "," << t->d<<endl;
+    preorder(t->l);
+    preorder(t->r);
+}
+void avl_tree::postorder(avl *t) {
+    if (t == NULL)
+        return;
+    postorder(t ->l);
+    postorder(t ->r);
+    cout << t->s << "," << t->d <<endl;
 }
 
-void AVLtree::insert(string &word) {
-    insertAVL(root, word);
-}
-
-void AVLtree::insertAVL(BTNode *tNode, string &data) {
-    if (tNode == nullptr) {
-        tNode = new BTNode(data);
-        root = tNode;
-        balance(tNode);
-    }
-    else {
-        if (data == tNode->data) {
-            tNode->num += 1;
-        }
-        else {
-            if (data < tNode->data) {
-                if (tNode->left == nullptr) {
-                    BTNode *temp = new BTNode(data);
-                    tNode->left = temp;
-                    balance(tNode);
-                }
-                else {
-                    insertAVL(tNode->left, data);
-                }
-            }
+int avl_tree::search(string &word) {
+    avl *p = r;                                     //Search pointer.
+    while (p) {
+        if (word < p->s) {
+            p = p->l;
+        } else {
+            if (word > p->s)
+                p = p->r;
             else {
-                if (tNode->right == nullptr) {
-                    BTNode *temp = new BTNode(data);
-                    tNode->right = temp;
-                    balance(tNode);
-
-                }
-                else {
-                    insertAVL(tNode->right, data);
-                }
+                return p->d;
             }
         }
     }
-}
-
-bool AVLtree::deleteWord(string &word) {
-    BTNode *p = root;                                     //Search pointer.
-    BTNode *pp = nullptr;                                 //Parent of p.
-    while(p && p->data != word) {
-        pp = p;
-        if(word < p-> data) {
-            p = p->left;
-        }
-        else {
-            p = p->right;
-        }
-    }
-    if(!p)                                              //Node not found.
-        return false;
-    //Handling case when p has 2 children.
-    if(p->left && p->right) {
-        BTNode *s = p->left;
-        BTNode *ps = p;                                 //Parent of s.
-        while (s->right) {
-            ps = s;
-            s = s->right;
-        }
-        p->data = s->data;
-        p = s;
-        pp = ps;
-        BTNode *c;
-        if (p->left)
-            c = p->left;
-        else
-            c = p->right;
-        //Delete node p.
-        if (p == root)
-            root = c;
-        else if (p == pp->left){
-            pp->left = c;
-            balance(pp);
-        }
-        else {
-            pp->right = c;
-            balance(pp);
-        }
-    }
-    delete p;
-    return true;
+    return 0;
 }

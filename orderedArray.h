@@ -7,15 +7,25 @@
 #include <string>
 
 using namespace std;
+
+
+using namespace std;
 class orderedArray {
 private:
-    string *data;               //Array storing the words (kept in relation to num).
-    int *num;                   //Array storing the occurrences of words.
+
+    class Cell {
+    public:
+
+        string word;                                      //The word that is stored
+        int occurrences = 0;                              //Int containing the appearances of a word (set externally)
+    };
+
+    Cell *table;
+
     long size;                  //Size of the array.
     bool binSearch(const string &word, long &pos);   //Binary search to be used internally.
     void quicksort(long start, long end);
-    void swap(int &a, int &b);
-    void swap(string &a, string &b);
+    void swap(Cell &a, Cell &b);
 public:
     orderedArray();
     void copyFromUnordered(string *newData, int *newNum, long arraySize);           //Copy a non sorted array and sort it.
@@ -24,6 +34,11 @@ public:
     int search(const string& word);                                  //Search for a word and return it's occurrences (0 for none).
     void remove(const string& word);                                 //Remove word from the array and readjust the order.
     long getSize() const;                                                  //Returns the size of the array.
+    void printTable(){
+        for (int i = 0; i < size; ++i) {
+            cout<<table[i].word<<" - "<<table[i].occurrences<<endl;
+        }
+    }
 
 
 
