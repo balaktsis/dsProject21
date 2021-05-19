@@ -11,6 +11,10 @@ BSTree::BSTree() {
     root = nullptr;
 }
 
+/*BSTree::~BSTree() {
+    deleteBST();
+}*/
+
 void BSTree::insert(string &data) {
     insert(root,data);
 }
@@ -79,7 +83,7 @@ bool BSTree::deleteWord(string &word) {
             p = p->right;
         }
     }
-    if(!p)                                              //Cell not found.
+    if(!p)                                              //Node not found.
         return false;
     //Handling case when p has 2 children.
     if(p->left && p->right) {
