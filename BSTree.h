@@ -34,7 +34,7 @@ struct BTNode {
 class BSTree {
 protected:
     BTNode *root;
-    void insert(BTNode*, string&);
+    BTNode *insert(BTNode*, string&);
     long getHeight(BTNode*);
     void deleteBST(BTNode*);
     void inOrder(BTNode*);
@@ -42,10 +42,10 @@ protected:
     void postOrder(BTNode*);
 public:
     BSTree();                                          //Constructs a new Binary Search Tree.
-    // ~BSTree();                                         //Destructor of Binary Search Tree.
-    virtual void insert(string &);                             //Inserts new string (node) in BST.
-    virtual bool deleteWord(string &);                         //Deletes a word of the BST (returns true if word exists).
-    int search(string &);                             //Searches a word in BST (returns true if word exists).
+    ~BSTree();                                         //Destructor of Binary Search Tree.
+    void insert(string &);                             //Inserts new string (node) in BST.
+    bool deleteWord(const string &);                         //Deletes a word of the BST (returns true if word exists).
+    int search(const string &);                             //Searches a word in BST (returns true if word exists).
     long getHeight();                                  //Returns height of BST.
     void deleteBST();                                  //Deletes Binary Search Tree.
     void inOrder();

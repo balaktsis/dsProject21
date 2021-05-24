@@ -11,12 +11,12 @@ BSTree::BSTree() {
     root = nullptr;
 }
 
-/*BSTree::~BSTree() {
+BSTree::~BSTree() {
     deleteBST();
-}*/
+}
 
 void BSTree::insert(string &data) {
-    insert(root,data);
+    root = insert(root,data);
 }
 
 long BSTree::getHeight() {
@@ -39,10 +39,9 @@ void BSTree::inOrder() {
     inOrder(root);
 }
 
-void BSTree::insert(BTNode *tNode, string &data) {
+BTNode * BSTree::insert(BTNode *tNode, string &data) {
     if (tNode == nullptr) {
         tNode = new BTNode(data);
-        root = tNode;
     }
     else {
         if (data == tNode->data) {
@@ -69,12 +68,13 @@ void BSTree::insert(BTNode *tNode, string &data) {
             }
         }
     }
+    return tNode;
 }
 
-bool BSTree::deleteWord(string &word) {
+bool BSTree::deleteWord(const string &word) {
     BTNode *p = root;                                     //Search pointer.
     BTNode *pp = nullptr;                                 //Parent of p.
-    while(p && p->data != word) {
+    while(p && p->data != word) {                         //Move to a child of p. Search for node storing word.
         pp = p;
         if(word < p-> data) {
             p = p->left;
@@ -85,30 +85,29 @@ bool BSTree::deleteWord(string &word) {
     }
     if(!p)                                              //Node not found.
         return false;
-    //Handling case when p has 2 children.
-    if(p->left && p->right) {
+    if(p->left && p->right) {                           //Handling case when p has 2 children. Converting to zero or one child case.
         BTNode *s = p->left;
         BTNode *ps = p;                                 //Parent of s.
-        while (s->right) {
+        while (s->right) {                              //Find largest element in left subtree of p.
             ps = s;
             s = s->right;
         }
-        p->data = s->data;
+        p->data = s->data;                              //Move largest from s to p, so the given word gets replaced.
         p = s;
         pp = ps;
-        BTNode *c;
-        if (p->left)
-            c = p->left;
-        else
-            c = p->right;
-        //Delete node p.
-        if (p == root)
-            root = c;
-        else if (p == pp->left)
-            pp->left = c;
-        else
-            pp->right = c;
-    }
+    }                                                   //Now, p kept at most one child. On the right or on the left.
+    BTNode *c=nullptr;                                  //Save child in c.
+    if (p->left)
+        c = p->left;
+    else
+        c = p->right;
+                                                        //Delete node p.
+    if (p == root)
+        root = c;
+    else if (p == pp->left)
+        pp->left = c;
+    else
+        pp->right = c;
     delete p;
     return true;
 }
@@ -156,7 +155,7 @@ void BSTree::postOrder(BTNode * tNode) {
     }
 }
 
-int BSTree::search(string &word) {
+int BSTree::search(const string &word) {
     BTNode *p = root;                                     //Search pointer.
     while (p) {
         if (word < p->data) {
