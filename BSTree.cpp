@@ -15,7 +15,7 @@ BSTree::~BSTree() {
     deleteBST();
 }
 
-void BSTree::insert(string &data) {
+void BSTree::insert(const string &data) {
     root = insert(root,data);
 }
 
@@ -39,26 +39,26 @@ void BSTree::inOrder() {
     inOrder(root);
 }
 
-BTNode * BSTree::insert(BTNode *tNode, string &data) {
-    if (tNode == nullptr) {
+BTNode * BSTree::insert(BTNode *tNode, const string &data) {
+    if (tNode == nullptr) {                                         //Putting string in a new leaf.
         tNode = new BTNode(data);
     }
     else {
-        if (data == tNode->data) {
+        if (data == tNode->data) {                                  //String already exists - update number of occurrences.
             tNode->num += 1;
         }
-        else {
-            if (data < tNode->data) {
-                if (tNode->left == nullptr) {
+        else {                                                      //New string - finding the correct place to get it saved.
+            if (data < tNode->data) {                               //If string is < than current node's string, it should be place left to current node.
+                if (tNode->left == nullptr) {                       //Putting string in a new leaf.
                     BTNode *temp = new BTNode(data);
                     tNode->left = temp;
                 }
-                else {
-                    insert(tNode->left, data);
+                else {                                              //String should be place left to current node, but there's
+                    insert(tNode->left, data);                      //another one, so it should be compared to current's child.
                 }
             }
-            else {
-                if (tNode->right == nullptr) {
+            else {                                                  //String should be placed right to current node.
+                if (tNode->right == nullptr) {                      //Corresponding to the above.
                     BTNode *temp = new BTNode(data);
                     tNode->right = temp;
                 }
@@ -87,12 +87,12 @@ bool BSTree::deleteWord(const string &word) {
         return false;
     if(p->left && p->right) {                           //Handling case when p has 2 children. Converting to zero or one child case.
         BTNode *s = p->left;
-        BTNode *ps = p;                                 //Parent of s.
+        BTNode *ps = p;                                 //Parent of data.
         while (s->right) {                              //Find largest element in left subtree of p.
             ps = s;
             s = s->right;
         }
-        p->data = s->data;                              //Move largest from s to p, so the given word gets replaced.
+        p->data = s->data;                              //Move largest from data to p, so the given word gets replaced.
         p = s;
         pp = ps;
     }                                                   //Now, p kept at most one child. On the right or on the left.
@@ -101,14 +101,14 @@ bool BSTree::deleteWord(const string &word) {
         c = p->left;
     else
         c = p->right;
-                                                        //Delete node p.
+                                                        //Set p's parent pointing to s's child.
     if (p == root)
         root = c;
     else if (p == pp->left)
         pp->left = c;
     else
         pp->right = c;
-    delete p;
+    delete p;                                           //Deletes the appropriate node.
     return true;
 }
 
@@ -157,16 +157,16 @@ void BSTree::postOrder(BTNode * tNode) {
 
 int BSTree::search(const string &word) {
     BTNode *p = root;                                     //Search pointer.
-    while (p) {
+    while (p) {                                           //While p is not NULL, move to the appropriate sub-tree to find the string/
         if (word < p->data) {
             p = p->left;
         } else {
             if (word > p->data)
                 p = p->right;
             else {
-                return p->num;
+                return p->num;                          //Returns number of occurrences of string in text-file.
             }
         }
     }
-    return 0;
+    return 0;                                          //Word not existed in text-file or deleted from BSTree object.
 }

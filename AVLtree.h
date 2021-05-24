@@ -4,35 +4,44 @@
 
 #ifndef TEST_AVLTREE_H
 #define TEST_AVLTREE_H
-#include "BSTree.h"
+#include <iostream>
 #include <string>
 
-struct avl {
-    int d;
-    string s;
-    struct avl *l;
-    struct avl *r;
+using namespace std;
+
+struct avlNode {
+    int num;
+    string data;
+    avlNode *left;
+    avlNode *right;
 };
-class avl_tree {
+
+class AVLTree {
 private:
-    avl *r;
+    avlNode *root;
+    long height(avlNode *);
+    long difference(avlNode *);
+    avlNode * rr_rotate(avlNode *);
+    avlNode * ll_rotate(avlNode *);
+    avlNode * lr_rotate(avlNode*);
+    avlNode * rl_rotate(avlNode *);
+    avlNode * balance(avlNode *);
+    avlNode * insert(avlNode*, const string &);
+    void inOrder(avlNode *);
+    void preOrder(avlNode *);
+    void postOrder(avlNode*);
+    void deleteAVL(avlNode*);
+    void deleteAVL();                                  //Deletes AVL Binary Search Tree.
 public:
-    long height(avl *);
-    long difference(avl *);
-    avl *rr_rotat(avl *);
-    avl *ll_rotat(avl *);
-    avl *lr_rotat(avl*);
-    avl *rl_rotat(avl *);
-    avl * balance(avl *);
-    avl * insert(avl*, string &);
-    void insert(string &);
-    //void show(avl*, string);//
-    void inorder(avl *);
-    void preorder(avl *);
-    void postorder(avl*);
-    avl_tree() {
-        r = NULL;
-    }
-    int search(string &);
+    AVLTree();
+    ~AVLTree();                                         //Destructor of AVL Binary Search Tree.
+    int search(const string &);
+    void insert(const string &);
+    bool deleteWord(const string &);
+    void inOrder();
+    void preOrder();
+    void postOrder();
+    long getHeight();                               //Returns height of AVLTree.
 };
+
 #endif //TEST_AVLTREE_H

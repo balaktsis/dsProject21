@@ -9,10 +9,10 @@
 using namespace std;
 
 struct BTNode {
-    string data;
-    long num;
-    BTNode *left;
-    BTNode *right;
+    string data;                                        //Word given in text-file.
+    long num;                                           //Number of occurrences of word in text-file.
+    BTNode *left;                                       //Left sub-tree/node-child.
+    BTNode *right;                                      //Right sub-tree/node-child.
     BTNode() {
         left = nullptr;
         right = nullptr;
@@ -34,23 +34,23 @@ struct BTNode {
 class BSTree {
 protected:
     BTNode *root;
-    BTNode *insert(BTNode*, string&);
-    long getHeight(BTNode*);
-    void deleteBST(BTNode*);
-    void inOrder(BTNode*);
-    void preOrder(BTNode*);
-    void postOrder(BTNode*);
+    BTNode *insert(BTNode*, const string&);            //Takes a node and attempts to insert string in it or in its subtrees. Begins with root node.
+    long getHeight(BTNode*);                           //Recursive node-height addition. Finds the longest route from root to a leaf.
+    void deleteBST(BTNode*);                           //Recursive node deletion. Begins with root, root's children etc.
+    void inOrder(BTNode*);                             //Recursive in-ordered node showing. Begins with root node.
+    void preOrder(BTNode*);                            //Recursive pre-ordered node showing. Begins with root node.
+    void postOrder(BTNode*);                           //Recursive post-ordered node showing. Begins with root node.
+    void deleteBST();                                  //Deletes Binary Search Tree.
 public:
     BSTree();                                          //Constructs a new Binary Search Tree.
     ~BSTree();                                         //Destructor of Binary Search Tree.
-    void insert(string &);                             //Inserts new string (node) in BST.
-    bool deleteWord(const string &);                         //Deletes a word of the BST (returns true if word exists).
-    int search(const string &);                             //Searches a word in BST (returns true if word exists).
+    void insert(const string &);                       //Inserts new string (node) in BST.
+    bool deleteWord(const string &);                   //Deletes a word of the BST (returns true if word exists).
+    int search(const string &);                        //Searches a word in BST (returns true if word exists).
     long getHeight();                                  //Returns height of BST.
-    void deleteBST();                                  //Deletes Binary Search Tree.
-    void inOrder();
-    void preOrder();
-    void postOrder();
+    void inOrder();                                    //In-ordered nodes showing.
+    void preOrder();                                   //Pre-ordered nodes showing.
+    void postOrder();                                  //Post-ordered nodes showing.
 };
 
 #endif //TEST_BSTREE_H

@@ -3,137 +3,211 @@
 #include <iostream>
 using namespace std;
 
-void avl_tree::insert(string &word) {
-    r = insert(r,word);
-    // static long i=0;
-    // cout<<"insertion"<<++i<<endl;
+AVLTree::AVLTree() {
+    root = nullptr;
 }
 
-long avl_tree::height(avl *t) {
+AVLTree::~AVLTree() {
+    deleteAVL();
+}
+
+void AVLTree::deleteAVL() {
+    deleteAVL(root);
+}
+
+void AVLTree::insert(const string &word) {
+    root = insert(root, word);
+}
+
+long AVLTree::height(avlNode *tNode) {
     long h = 0;
-    if (t != NULL) {
-        long l_height = height(t->l);
-        long r_height = height(t->r);
+    if (tNode != nullptr) {
+        long l_height = height(tNode->left);
+        long r_height = height(tNode->right);
         long max_height = max(l_height, r_height);
         h = max_height + 1;
     }
     return h;
 }
-long avl_tree::difference(avl *t) {
-    long l_height = height(t->l);
-    long r_height = height(t->r);
+
+long AVLTree::getHeight() {
+    return height(root);
+}
+
+long AVLTree::difference(avlNode *tNode) {
+    long l_height = height(tNode->left);
+    long r_height = height(tNode->right);
     long b_factor = l_height - r_height;
     return b_factor;
 }
-avl *avl_tree::rr_rotat(avl *parent) {
-    avl *t;
-    t = parent->r;
-    parent->r = t->l;
-    t->l = parent;
-    //cout<<"Right-Right Rotation";
-    return t;
-}
-avl *avl_tree::ll_rotat(avl *parent) {
-    avl *t;
-    t = parent->l;
-    parent->l = t->r;
-    t->r = parent;
-    //cout<<"Left-Left Rotation";
-    return t;
-}
-avl *avl_tree::lr_rotat(avl *parent) {
-    avl *t;
-    t = parent->l;
-    parent->l = rr_rotat(t);
-    // cout<<"Left-Right Rotation";
-    return ll_rotat(parent);
-}
-avl *avl_tree::rl_rotat(avl *parent) {
-    avl *t;
-    t = parent->r;
-    parent->r = ll_rotat(t);
-    //cout<<"Right-Left Rotation";
-    return rr_rotat(parent);
-}
-avl *avl_tree::balance(avl *t) {
-    long bal_factor = difference(t);
-    if (bal_factor > 1) {
-        if (difference(t->l) > 0)
-            t = ll_rotat(t);
-        else
-            t = lr_rotat(t);
-    } else if (bal_factor < -1) {
-        if (difference(t->r) > 0)
-            t = rl_rotat(t);
-        else
-            t = rr_rotat(t);
-    }
-    return t;
-}
-avl *avl_tree::insert(avl *r, string &v) {
-    if (r == NULL) {
-        r = new avl;
-        r->s = v;
-        r->l = NULL;
-        r->r = NULL;
-        r->d = 1;
-        return r;
-    } else if (v< r->s) {
-        r->l = insert(r->l, v);
-        r = balance(r);
-    } else if (v > r->s) {
-        r->r = insert(r->r, v);
-        r = balance(r);
-    } else {r->d = r->d+1;}
-    return r;
-}
-/*void avl_tree::show(avl *p, int l) {
-   long i;
-   if (p != NULL) {
-      show(p->r, l+ 1);
-      cout<<" ";
-      if (p == r)
-         cout << "Root -> ";
-      for (i = 0; i < l&& p != r; i++)
-         cout << " ";
-         cout << p->d;
-         show(p->l, l + 1);
-   }
-}*/
-void avl_tree::inorder(avl *t) {
-    if (t == NULL)
-        return;
-    inorder(t->l);
-    cout << t->s << ","<<t->d<<endl;
-    inorder(t->r);
-}
-void avl_tree::preorder(avl *t) {
-    if (t == NULL)
-        return;
-    cout << t->s << "," << t->d<<endl;
-    preorder(t->l);
-    preorder(t->r);
-}
-void avl_tree::postorder(avl *t) {
-    if (t == NULL)
-        return;
-    postorder(t ->l);
-    postorder(t ->r);
-    cout << t->s << "," << t->d <<endl;
+
+avlNode *AVLTree::rr_rotate(avlNode *parent) {
+    avlNode *tNode;
+    tNode = parent->right;
+    parent->right = tNode->left;
+    tNode->left = parent;
+    return tNode;
 }
 
-int avl_tree::search(string &word) {
-    avl *p = r;                                     //Search pointer
+avlNode *AVLTree::ll_rotate(avlNode *parent) {
+    avlNode *tNode;
+    tNode = parent->left;
+    parent->left = tNode->right;
+    tNode->right = parent;
+    return tNode;
+}
+
+avlNode *AVLTree::lr_rotate(avlNode *parent) {
+    avlNode *tNode;
+    tNode = parent->left;
+    parent->left = rr_rotate(tNode);
+    return ll_rotate(parent);
+}
+
+avlNode *AVLTree::rl_rotate(avlNode *parent) {
+    avlNode *t;
+    t = parent->right;
+    parent->right = ll_rotate(t);
+    //cout<<"Right-Left Rotation";
+    return rr_rotate(parent);
+}
+
+avlNode *AVLTree::balance(avlNode *tNode) {
+    long bal_factor = difference(tNode);
+    if (bal_factor > 1) {
+        if (difference(tNode->left) > 0)
+            tNode = ll_rotate(tNode);
+        else
+            tNode = lr_rotate(tNode);
+    }
+    else
+        if (bal_factor < -1) {
+            if (difference(tNode->right) > 0)
+                tNode = rl_rotate(tNode);
+            else
+                tNode = rr_rotate(tNode);
+    }
+    return tNode;
+}
+
+avlNode *AVLTree::insert(avlNode *tNode, const string &word) {
+    if (tNode == nullptr) {
+        tNode = new avlNode;
+        tNode->data = word;
+        tNode->left = nullptr;
+        tNode->right = nullptr;
+        tNode->num = 1;
+        return tNode;
+    } else if (word < tNode->data) {
+        tNode->left = insert(tNode->left, word);
+        tNode = balance(tNode);
+    } else if (word > tNode->data) {
+        tNode->right = insert(tNode->right, word);
+        tNode = balance(tNode);
+    } else { tNode->num = tNode->num + 1;}
+    return tNode;
+}
+
+void AVLTree::inOrder(avlNode *tNode) {
+    if (tNode == nullptr)
+        return;
+    inOrder(tNode->left);
+    cout << tNode->data << " : " << tNode->num << endl;
+    inOrder(tNode->right);
+}
+
+void AVLTree::preOrder(avlNode *tNode) {
+    if (tNode == nullptr)
+        return;
+    cout << tNode->data << " : " << tNode->num << endl;
+    preOrder(tNode->left);
+    preOrder(tNode->right);
+}
+
+void AVLTree::postOrder(avlNode *tNode) {
+    if (tNode == nullptr)
+        return;
+    postOrder(tNode->left);
+    postOrder(tNode->right);
+    cout << tNode->data << " : " << tNode->num << endl;
+}
+
+int AVLTree::search(const string &word) {
+    avlNode *p = root;                                     //Search pointer
     while (p) {
-        if (word < p->s) {
-            p = p->l;
+        if (word < p->data) {
+            p = p->left;
         } else {
-            if (word > p->s)
-                p = p->r;
+            if (word > p->data)
+                p = p->right;
             else {
-                return p->d;
+                return p->num;
             }
         }
     }
     return 0;
+}
+
+bool AVLTree::deleteWord(const string &word) {
+    avlNode *p = root;                                     //Search pointer.
+    avlNode *pp = nullptr;                                 //Parent of p.
+    while(p && p->data != word) {                         //Move to a child of p. Search for node storing word.
+        pp = p;
+        if(word < p-> data) {
+            p = p->left;
+        }
+        else {
+            p = p->right;
+        }
+    }
+    if(!p)                                              //Node not found.
+        return false;
+    if(p->left && p->right) {                           //Handling case when p has 2 children. Converting to zero or one child case.
+        avlNode *s = p->left;
+        avlNode *ps = p;                                 //Parent of data.
+        while (s->right) {                              //Find largest element in left subtree of p.
+            ps = s;
+            s = s->right;
+        }
+        p->data = s->data;                              //Move largest from data to p, so the given word gets replaced.
+        p = s;
+        pp = ps;
+    }                                                   //Now, p kept at most one child. On the right or on the left.
+    avlNode *c=nullptr;                                  //Save child in c.
+    if (p->left)
+        c = p->left;
+    else
+        c = p->right;
+    //Delete node p.
+    if (p == root)
+        root = c;
+    else if (p == pp->left)
+        pp->left = c;
+    else
+        pp->right = c;
+    delete p;
+    return true;
+}
+
+void AVLTree::postOrder() {
+    postOrder(root);
+}
+
+void AVLTree::preOrder() {
+    preOrder(root);
+}
+
+void AVLTree::inOrder() {
+    inOrder(root);
+}
+
+void AVLTree::deleteAVL(avlNode *tNode) {
+    if (tNode != nullptr) {
+        avlNode *curNode = tNode;
+        avlNode *leftNode = tNode->left;
+        avlNode *rightNode = tNode->right;
+        delete (curNode);
+        deleteAVL(leftNode);
+        deleteAVL(rightNode);
+    }
 }
