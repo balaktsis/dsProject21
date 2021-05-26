@@ -34,14 +34,6 @@ public:
     int search(const string& word);                                  //Search for a word and return it's occurrences (0 for none).
     void remove(const string& word);                                 //Remove word from the array and readjust the order.
     long getSize() const;                                                  //Returns the size of the array.
-    void printTable(){
-        for (int i = 0; i < size; ++i) {
-            cout<<table[i].word<<" - "<<table[i].occurrences<<endl;
-        }
-    }
-
-
-
 };
 
 
