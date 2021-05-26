@@ -3,7 +3,6 @@
 //
 
 #include "hashTable.h"
-#include <cmath>
 using namespace std;
 
 
@@ -20,36 +19,40 @@ long hashTable::stringToHash(const string word, long max) const{            //Im
     long hash_val = 0;
 
     for (char i : word) {                                                   //Iterating through the chars in the word
-        hash_val = (hash_val + (i + 1 - 'a') * seed) % m;
+        hash_val = (hash_val + (i + 1 - 'a') * seed) % m;                   //and doing math with their decimal value in ASCII
         seed = (seed * prime) % m;
     }
     return hash_val;
 }
 
-bool hashTable::insert(const string word) {
-    long key = stringToHash(word, size);
+bool hashTable::insert(const string word) {                                   //Insert algorithm for the Hash table
+    long key = stringToHash(word, size);                                //Takes a string and generates it's key
 
-    for (int i = key; i < size; ++i) {
-        D:
-        if (table[i].occurrences && table[i].word == word){
-            table[i].occurrences += 1;
+    for (int i = key; i < size; ++i) {                                        //Linear search starting from the key.
+                                                                              //If the word is found, it's occurrence value
+        if (table[i].occurrences && table[i].word == word){                   //is incremented and the operation ends
+            table[i].occurrences += 1;                                        //returning 'false' as the word wasn't inserted
             return false;
-        } else if (table[i].occurrences == 0){
-            table[i].word = word;
+        } else if (table[i].occurrences == 0){                                //If the word is not found, it gets inserted in the
+            table[i].word = word;                                             //next unoccupied cell
             table[i].occurrences = 1;
             occupied++;
             break;
         }
 
-        if (i == size-1){
-            i = 0;
-            goto D;
+        if (i == size-1){                                                     //If the end of the table is reached, we loop back to the front
+            i = -1;     //Using value -1 because it's incremented automatically by the for loop
         }
+                                                                                //In theory a state with no exit condition
+                                                                                //exists, but it's impossible to reach, as there's
+                                                                                //always going to be empty cells within the
+                                                                                //array, for it to reach an exit.
     }
 
 
 
-    if (size - expand_threshold == occupied){
+    if (size - expand_threshold == occupied){                                   //If enough of the table is filled
+                                                                                //the expand function is called.
         expandAndRehash();
     }
 
@@ -58,11 +61,11 @@ bool hashTable::insert(const string word) {
 }
 
 
-bool hashTable::insertUnique(string word, int occurrences) {
-    long key = stringToHash(word, size);
+bool hashTable::insertUnique(string word, int occurrences) {                    //Same functionality and structure as simple insert
+    long key = stringToHash(word, size);                                  //But the word occurrences are passed as a parameter
 
     for (int i = key; i < size; ++i) {
-        C:
+
         if (table[i].occurrences && table[i].word == word){
             table[i].occurrences = occurrences;
             return false;
@@ -74,8 +77,7 @@ bool hashTable::insertUnique(string word, int occurrences) {
         }
 
         if (i == size-1){
-            i = 0;
-            goto C;
+            i = -1;     //Using value -1 because it's incremented automatically by the for loop
         }
     }
 
@@ -90,23 +92,23 @@ bool hashTable::insertUnique(string word, int occurrences) {
 
 
 
-int hashTable::search(const string word) {
-    long key = stringToHash(word, size);
+int hashTable::search(const string word) {          //Search algorithm, with a word as a parameter and returns it's occurrences (0 if none)
+    long key = stringToHash(word, size);      //Starts off by generating a key from the word.
     char overflow = 0;
 
-    for (int i = key; i < size; ++i) {
-        B:
+    for (int i = key; i < size; ++i) {              //Then a linear search begins from the key and linearly parses cells
+                                                    //Until either the word is found, or an empty cell is reached (not found)
+
         if (table[i].word == word && table[i].occurrences){
             return table[i].occurrences;
         } else if (table[i].occurrences == 0){
             return 0;
         }
         if (i == size-1 && !overflow){
-            i = 0;
+            i = -1;
             overflow = 1;
-            goto B;
         }
-        if (overflow && i == key){         //Once the linear search completes a loop through the array, without finding
+        if (overflow && i == key){          //Once the linear search completes a loop through the array, without finding
             return 0;                       //the key, 0 (not found) is returned.
         }
 
@@ -114,13 +116,13 @@ int hashTable::search(const string word) {
     return 0;
 }
 
-void hashTable::expandAndRehash() {
-
+void hashTable::expandAndRehash() {         //Table expansion algorithm
+                                            //Doubling the array size at each invocation
     long oldSize = size;
-    size = size*2;
-    update_threshold();
-    occupied = 0;
-
+    size = size*2;                          //Starts off by creating a duplicate of the array
+    update_threshold();                     //erasing the main one, allocating double the memory to it
+    occupied = 0;                           //and inserting all the words from the duplicate back to it (using an updated hashing algorithm)
+                                            //that yields larger keys
 
     Cell *oldTable = table;
     table = new Cell[size];
