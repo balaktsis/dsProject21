@@ -20,11 +20,11 @@ void AVLTree::insert(const string &word) {
 }
 
 long AVLTree::height(avlNode *tNode) {
-    long h = 0;
-    if (tNode != nullptr) {
-        long l_height = height(tNode->left);
-        long r_height = height(tNode->right);
-        long max_height = max(l_height, r_height);
+    long h = 0;															
+    if (tNode != nullptr) {												//Not checking a leaf or root.
+        long l_height = height(tNode->left);							//Find height of left sub-tree.
+        long r_height = height(tNode->right);							//Find height of right sub-tree.
+        long max_height = max(l_height, r_height);						//Keep the maximum of the two and add 1, including root.
         h = max_height + 1;
     }
     return h;
@@ -35,7 +35,7 @@ long AVLTree::getHeight() {
 }
 
 long AVLTree::difference(avlNode *tNode) {
-    long l_height = height(tNode->left);
+    long l_height = height(tNode->left);								
     long r_height = height(tNode->right);
     long b_factor = l_height - r_height;
     return b_factor;
@@ -68,14 +68,13 @@ avlNode *AVLTree::rl_rotate(avlNode *parent) {
     avlNode *t;
     t = parent->right;
     parent->right = ll_rotate(t);
-    //cout<<"Right-Left Rotation";
     return rr_rotate(parent);
 }
 
 avlNode *AVLTree::balance(avlNode *tNode) {
     long bal_factor = difference(tNode);
     if (bal_factor > 1) {
-        if (difference(tNode->left) > 0)
+        if (difference(tNode->left) >= 0)
             tNode = ll_rotate(tNode);
         else
             tNode = lr_rotate(tNode);
@@ -91,20 +90,16 @@ avlNode *AVLTree::balance(avlNode *tNode) {
 }
 
 avlNode *AVLTree::insert(avlNode *tNode, const string &word) {
-    if (tNode == nullptr) {
-        tNode = new avlNode;
-        tNode->data = word;
-        tNode->left = nullptr;
-        tNode->right = nullptr;
-        tNode->num = 1;
+    if (tNode == nullptr) {												//Putting string in a new leaf.
+        tNode = new avlNode(word);
         return tNode;
-    } else if (word < tNode->data) {
-        tNode->left = insert(tNode->left, word);
+    } else if (word < tNode->data) {									//If string is < than current node's string, it should be place left to current node.
+        tNode->left = insert(tNode->left, word);						//Putting string in a new leaf.
+        tNode = balance(tNode);											//Checking and fixing tree's balance state.
+    } else if (word > tNode->data) {									//Corresponding to the above.
+        tNode->right = insert(tNode->right, word);						
         tNode = balance(tNode);
-    } else if (word > tNode->data) {
-        tNode->right = insert(tNode->right, word);
-        tNode = balance(tNode);
-    } else { tNode->num = tNode->num + 1;}
+    } else { tNode->num = tNode->num + 1;}						 		//String already exists - update number of occurrences.
     return tNode;
 }
 
@@ -133,25 +128,25 @@ void AVLTree::postOrder(avlNode *tNode) {
 }
 
 int AVLTree::search(const string &word) {
-    avlNode *p = root;                                     //Search pointer
-    while (p) {
+    avlNode *p = root;                                    				//Search pointer
+    while (p) {															//While p is not NULL, move to the appropriate sub-tree to find the string.
         if (word < p->data) {
             p = p->left;
         } else {
             if (word > p->data)
                 p = p->right;
             else {
-                return p->num;
+                return p->num;											//Returns number of occurrences of string in text-file.
             }
         }
     }
-    return 0;
+    return 0;															//Word not existed in text-file or deleted from AVLTree object.
 }
 
 bool AVLTree::deleteWord(const string &word) {
-    avlNode *p = root;                                     //Search pointer.
-    avlNode *pp = nullptr;                                 //Parent of p.
-    while(p && p->data != word) {                         //Move to a child of p. Search for node storing word.
+    avlNode *p = root;                                   				//Search pointer.
+    avlNode *pp = nullptr;                               			  	//Parent of p.
+    while(p && p->data != word) {                        			 	//Move to a child of p. Search for node storing word.
         pp = p;
         if(word < p-> data) {
             p = p->left;
@@ -160,32 +155,33 @@ bool AVLTree::deleteWord(const string &word) {
             p = p->right;
         }
     }
-    if(!p)                                              //Node not found.
+    if(!p)                                              				//Node not found.
         return false;
-    if(p->left && p->right) {                           //Handling case when p has 2 children. Converting to zero or one child case.
+    if(p->left && p->right) {                          	 				//Handling case when p has 2 children. Converting to zero or one child case.
         avlNode *s = p->left;
-        avlNode *ps = p;                                 //Parent of data.
-        while (s->right) {                              //Find largest element in left subtree of p.
+        avlNode *ps = p;                                 				//Parent of data.
+        while (s->right) {                             				 	//Find largest element in left subtree of p.
             ps = s;
             s = s->right;
         }
-        p->data = s->data;                              //Move largest from data to p, so the given word gets replaced.
+        p->data = s->data;                           				   	//Move largest from data to p, so the given word gets replaced.
         p = s;
         pp = ps;
-    }                                                   //Now, p kept at most one child. On the right or on the left.
-    avlNode *c=nullptr;                                  //Save child in c.
+    }                                                   				//Now, p kept at most one child. On the right or on the left.
+    avlNode *c=nullptr;                                				  	//Save child in c.
     if (p->left)
         c = p->left;
     else
         c = p->right;
-    //Delete node p.
+																		//Set p's parent pointing to s's child.
     if (p == root)
         root = c;
     else if (p == pp->left)
         pp->left = c;
     else
         pp->right = c;
-    delete p;
+    delete p;															//Deletes the appropriate node.
+    root = balance(root);												//Checking and fixing tree's balance state.
     return true;
 }
 
