@@ -28,6 +28,9 @@ private:
     void swap(Cell &a, Cell &b);
 public:
     orderedArray();
+    ~orderedArray(){
+        delete[] table;
+    }
     void copyFromUnordered(string *newData, int *newNum, long arraySize);           //Copy a non sorted array and sort it.
     void insert(const string& word);                                //Get a word and insert it in the correct order/increment it's appearance number.
     void insertUnique(const string& word, int occurrences);    //Get a word and occurrence number and place it in the correct spot.

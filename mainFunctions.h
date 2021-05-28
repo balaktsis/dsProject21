@@ -30,7 +30,7 @@ string wordStrip(const string &word) {
     return temp;
 }
 
-long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, avl_tree &AvlTree) {
+long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree) {
     long count = 0;
     long uniqueCount = 0;
     string word;
@@ -103,7 +103,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
     return count;
 }
 
-void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, avl_tree &AvlTree){
+void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree){
     string words[searchCount];
     int value;
     srand(searchCount);

@@ -29909,7 +29909,7 @@ announces Leonardo's death to Giuliano da Vinci at Florence (see p.
 284), he says at the end "_Datemene risposta per i Gondi_" (see
 UZIELLI, _Ricerche_, passim).
 
-Most of the other names on the list are those of well-known
+Most of the other names on the subarray are those of well-known
 Florentine families.]
 
 1451.
@@ -30422,7 +30422,7 @@ Bologna per Ugo di Rugerii," in-40, del secolo XV. Altra edizione di
 "Venetia Bernardino di Novara, 1487" e "Milano per Joanne Angelo
 Scinzenzeler 1500," in-40._ (G. D'A.)
 
-Five books out of this list are noted by Leonardo in another MS.
+Five books out of this subarray are noted by Leonardo in another MS.
 (Tr. 3): _donato, -- lapidario, -- plinio, -- abacho, -- morgante._]
 
 1470.
@@ -31899,7 +31899,7 @@ Virginia, Wisconsin, and Wyoming.
 We have filed in all 50 states now, but these are the only ones
 that have responded.
 
-As the requirements for other states are met, additions to this list
+As the requirements for other states are met, additions to this subarray
 will be made and fund raising will begin in the additional states.
 Please feel free to ask to check the status of your state.
 
@@ -31907,7 +31907,7 @@ In answer to various questions we have received on this:
 
 We are constantly working on finishing the paperwork to legally
 request donations in all 50 states.  If your state is not listed and
-you would like to know if we have added it since the list you have,
+you would like to know if we have added it since the subarray you have,
 just ask.
 
 While we cannot solicit donations from people in states where we are
@@ -31934,7 +31934,7 @@ The Project Gutenberg Literary Archive Foundation has been approved by
 the US Internal Revenue Service as a 501(c)(3) organization with EIN
 [Employee Identification Number] 64-622154.  Donations are
 tax-deductible to the maximum extent permitted by law.  As fund-raising
-requirements for other states are met, additions to this list will be
+requirements for other states are met, additions to this subarray will be
 made and fund-raising will begin in the additional states.
 
 We need your donations more than ever!

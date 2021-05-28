@@ -33,10 +33,12 @@ private:
         expand_threshold = floor(sqrt(size));
     }
 
-    long stringToHash(const string word, long max) const;            //Algorithm to convert strings into hash keys
+    long stringToHash(string word, long max) const;            //Algorithm to convert strings into hash keys
     void expandAndRehash();
 public:
-
+    ~hashTable(){
+        delete[] table;
+    }
     bool insertUnique(string word, int occurrences);
     bool insert(string word);     //Insert a word  and occurrence num into the table if it doesn't exist. Returns 1 if it was added.
     int search(string word);      //Find a word within the table and return it's occurrence number (0 if it doesn't exist)
