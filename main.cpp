@@ -16,15 +16,15 @@ using namespace std::chrono;
 
 string wordStrip(const string &word);
 long initStructures(const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree);
-void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree);
+void timeQSearches(const string &filename, long searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree);
 
 template<typename searchable>
-void calcSearch(searchable structure, int searchCount, string *words, string arrName);
+void calcSearch(searchable &structure, long searchCount, string *words, string arrName);
 
 
 int main() {
 
-    string filename = "../medium-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
+    string filename = "../small-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
 
     //Declaring variables for each data structure (Uninitialized)
     hashTable HashTable;
@@ -42,9 +42,12 @@ int main() {
 
 
     //Search benchmark (first parameter being the random word count - Q)
-    timeQSearches(1000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(filename, 10000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(filename, 30000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(filename, 50000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(filename, 100000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(filename, 150000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
 
-    printf("Hi!");
     return 0;
 }
 
@@ -111,7 +114,7 @@ long initStructures(const string &filename, UnorderedArray &unorderedArray, hash
 }
 
 template<typename searchable>
-void calcSearch(searchable structure, int searchCount, string *words, string arrName){
+void calcSearch(searchable &structure, long searchCount, string *words, string arrName){
 
 
     /*
@@ -129,20 +132,52 @@ void calcSearch(searchable structure, int searchCount, string *words, string arr
     for (int i = 0; i < searchCount; ++i) {count += structure.search(words[i]);}
     auto end = high_resolution_clock::now();
     duration<double, milli> elapsed = end - begin;
-    cout<<"Searching "<<searchCount<<" words in "<<arrName<<" yielded "<<count<<" results in "<<elapsed.count()<<"ms"<<endl;
+//    cout<<"Searching "<<searchCount<<" words in "<<arrName<<" yielded "<<count<<" results in ";
+//    printf(" %.4lf ms\n", elapsed.count());
+    cout<<""<<searchCount<<" - "<<arrName;
+    printf(" - %.4lf\n", elapsed.count());
 }
 
 
 
-void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree){
-    string words[searchCount];
-    int value;
-    srand(searchCount);
+void timeQSearches(const string& filename, long searchCount, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree){
 
-    for (int i = 0; i < searchCount; ++i) {         //Filling a Q-sized array with randomly chosen words
-        value = rand() % searchCount;
-        words[i] = unorderedArray.getData(value);
+    string *words;
+    words = new string[searchCount];
+
+//    int value;
+//    srand(searchCount);
+//
+//    for (int i = 0; i < searchCount; ++i) {         //Filling a Q-sized array with randomly chosen words
+//        value = rand() % searchCount;
+//        words[i] = unorderedArray.getData(value);
+//    }
+
+
+
+    ifstream ifs;
+    ifs.open(filename);
+    ifs.seekg (0, ios::beg);
+    if (!ifs.is_open()){
+        cout<<"file error"<<endl;
+        return;
     }
+
+
+    long count = 0;
+    while (ifs >> words[count]) {
+        words[count] = wordStrip(words[count]);
+        if (words[count].empty() || (0 <= words[count][0] && words[count][0] <= 32)) {
+            continue;
+        }
+        count++;
+        if (count == searchCount){
+            break;
+        }
+    }
+
+    ifs.close();
+
 
     //Timing for the Unordered Array
     calcSearch(unorderedArray, searchCount, words, "Unordered Array");
@@ -158,5 +193,7 @@ void timeQSearches(int searchCount, UnorderedArray &unorderedArray, hashTable &H
 
     //Timing for the Hash Table
     calcSearch(HashTable, searchCount, words, "Hash Table");
+
+    delete[] words;
 
 }
