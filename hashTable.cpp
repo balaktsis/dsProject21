@@ -28,7 +28,7 @@ long hashTable::stringToHash(const string word, long max) const{            //Im
 bool hashTable::insert(const string word) {                                   //Insert algorithm for the Hash table
     long key = stringToHash(word, size);                                //Takes a string and generates it's key
 
-    for (int i = key; i < size; ++i) {                                        //Linear search starting from the key.
+    for (long i = key; i < size; ++i) {                                        //Linear search starting from the key.
                                                                               //If the word is found, it's occurrence value
         if (table[i].occurrences && table[i].word == word){                   //is incremented and the operation ends
             table[i].occurrences += 1;                                        //returning 'false' as the word wasn't inserted
@@ -64,7 +64,7 @@ bool hashTable::insert(const string word) {                                   //
 bool hashTable::insertUnique(string word, int occurrences) {                    //Same functionality and structure as simple insert
     long key = stringToHash(word, size);                                  //But the word occurrences are passed as a parameter
 
-    for (int i = key; i < size; ++i) {
+    for (long i = key; i < size; ++i) {
 
         if (table[i].occurrences && table[i].word == word){
             table[i].occurrences = occurrences;
@@ -94,9 +94,8 @@ bool hashTable::insertUnique(string word, int occurrences) {                    
 
 int hashTable::search(const string word) {          //Search algorithm, with a word as a parameter and returns it's occurrences (0 if none)
     long key = stringToHash(word, size);      //Starts off by generating a key from the word.
-    char overflow = 0;
 
-    for (int i = key; i < size; ++i) {              //Then a linear search begins from the key and linearly parses cells
+    for (long i = key; i < size; ++i) {             //Then a linear search begins from the key and linearly parses cells
                                                     //Until either the word is found, or an empty cell is reached (not found)
 
         if (table[i].word == word && table[i].occurrences){
@@ -104,13 +103,11 @@ int hashTable::search(const string word) {          //Search algorithm, with a w
         } else if (table[i].occurrences == 0){
             return 0;
         }
-        if (i == size-1 && !overflow){
+        if (i == size-1){
             i = -1;
-            overflow = 1;
+//            overflow = 1;
         }
-        if (overflow && i == key){          //Once the linear search completes a loop through the array, without finding
-            return 0;                       //the key, 0 (not found) is returned.
-        }
+
 
     }
     return 0;
@@ -127,7 +124,7 @@ void hashTable::expandAndRehash() {         //Table expansion algorithm
     Cell *oldTable = table;
     table = new Cell[size];
 
-    for (int i = 0; i < oldSize; ++i) {
+    for (long i = 0; i < oldSize; ++i) {
         if (oldTable[i].occurrences == 0){       //Skip vacant cells
             continue;
         }
