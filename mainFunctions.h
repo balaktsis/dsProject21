@@ -31,8 +31,8 @@ string wordStrip(const string &word) {
 }
 
 long
-initStructures(config Config, const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable,
-               orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree) {
+initStructures(config Config, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray,
+               BSTree &BinaryTree, AVLTree &AvlTree) {
     long count = 0;
     long uniqueCount = 0;
     string word;

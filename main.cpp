@@ -16,24 +16,24 @@ using namespace std::chrono;
 
 class config{
 public:
-    bool unordered, ordered, binary, avl, hash;
+    bool unordered, ordered, binary, avl, hash, export_results;
+    string filename;
 };
 
 string wordStrip(const string &word);
 long
-initStructures(config Config, const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable,
-               orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree);
+initStructures(config Config, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray,
+               BSTree &BinaryTree, AVLTree &AvlTree);
 void
-timeQSearches(config Config, long fileWords, const string &filename, long Q, UnorderedArray &unorderedArray,
-              hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree);
+timeQSearches(config Config, long fileWords, long Q, UnorderedArray &unorderedArray, hashTable &HashTable,
+              orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree);
 
 template<typename searchable>
-void calcSearch(searchable &structure, long searchCount, string *words, string arrName);
+void calcSearch(searchable &structure, long searchCount, string *words, string arrName, bool export_results);
 
 
 int main() {
 
-    string filename = "../small-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
 
     //Declaring variables for each data structure (Uninitialized)
     hashTable HashTable;
@@ -47,25 +47,29 @@ int main() {
             Config.ordered = false,
             Config.binary = true,
             Config.avl = false,
-            Config.hash = true
+            Config.hash = true,
+
+            Config.export_results = false    //If true, the results will be written to a file. Will have an adverse effect to performance
     };
+
+    Config.filename = "../small-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
 
 
 
     printf("Filling up the arrays...\n");
 
     //Fill up the data structures from the file.
-    long filewords = initStructures(Config, filename, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    long filewords = initStructures(Config, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
 
 
     //Search benchmark (first parameter being the random word count - Q)
 
-    timeQSearches(Config, filewords, filename, 1000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, filename, 3000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, filename, 5000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, filename, 7000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, filename, 10000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, filename, 15000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(Config, filewords, 1000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(Config, filewords, 3000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(Config, filewords, 5000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(Config, filewords, 7000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(Config, filewords, 10000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+    timeQSearches(Config, filewords, 15000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
 
     return 0;
 }
@@ -85,8 +89,8 @@ string wordStrip(const string &word) {
 }
 
 long
-initStructures(config Config, const string &filename, UnorderedArray &unorderedArray, hashTable &HashTable,
-               orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree) {
+initStructures(config Config, UnorderedArray &unorderedArray, hashTable &HashTable, orderedArray &OrderedArray,
+               BSTree &BinaryTree, AVLTree &AvlTree) {
     long count = 0;
     long uniqueCount = 0;
     string word;
@@ -97,7 +101,7 @@ initStructures(config Config, const string &filename, UnorderedArray &unorderedA
 
 
     ifstream ifs;
-    ifs.open(filename);
+    ifs.open(Config.filename);
     if (ifs.is_open()) {
         cout << "File open ok" << endl;
         while (ifs >> word) {
@@ -146,7 +150,7 @@ initStructures(config Config, const string &filename, UnorderedArray &unorderedA
 }
 
 template<typename searchable>
-void calcSearch(searchable &structure, long searchCount, string *words, string arrName){
+void calcSearch(searchable &structure, long searchCount, string *words, string arrName, bool export_results) {
 
 
     /*
@@ -159,24 +163,32 @@ void calcSearch(searchable &structure, long searchCount, string *words, string a
      * elapsed  : Time between end and begin in milliseconds.
      */
 
-    long long count = 0;
-    auto begin = high_resolution_clock::now();
 
-    ofstream myfile;
+
+
+    ofstream output;
     string filename;
-    filename = arrName + " - " + to_string(searchCount);
-    myfile.open (filename);
+    filename = arrName + ", Q:  " + to_string(searchCount);
+    output.open (filename);
 
+
+    long long count = 0;
     long tempcount = 0;
+
+    auto begin = high_resolution_clock::now();
 
     for (long i = 0; i < searchCount; ++i) {
         tempcount = structure.search(words[i]);
         count += tempcount;
-        myfile<<words[i]<<" - "<<tempcount<<endl;
+        if(export_results) {
+            output << words[i] << " - " << tempcount << endl;
+        }
     }
-    myfile.close();
+
 
     auto end = high_resolution_clock::now();
+
+    output.close();
 
     duration<double, milli> elapsed = end - begin;
 
@@ -189,8 +201,8 @@ void calcSearch(searchable &structure, long searchCount, string *words, string a
 
 
 void
-timeQSearches(config Config, long fileWords, const string &filename, long Q, UnorderedArray &unorderedArray,
-              hashTable &HashTable, orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree) {
+timeQSearches(config Config, long fileWords, long Q, UnorderedArray &unorderedArray, hashTable &HashTable,
+              orderedArray &OrderedArray, BSTree &BinaryTree, AVLTree &AvlTree) {
 
     string *words;
     words = new string[Q];
@@ -201,13 +213,13 @@ timeQSearches(config Config, long fileWords, const string &filename, long Q, Uno
     srand(Q);
     for (long i = 0; i < Q; ++i) {
 
-        wordIndex[i] = /*(rand() % step) +*/ step * i;
+        wordIndex[i] = (rand() % step) + step * i;
     }
 
 
 
     ifstream ifs;
-    ifs.open(filename);
+    ifs.open(Config.filename);
     ifs.seekg (0, ios::beg);
     if (!ifs.is_open()){
         cout<<"file error"<<endl;
@@ -239,23 +251,23 @@ timeQSearches(config Config, long fileWords, const string &filename, long Q, Uno
 
     //Timing for the Unordered Array
     if (Config.unordered)
-        calcSearch(unorderedArray, Q, words, "Unordered Array");
+        calcSearch(unorderedArray, Q, words, "Unordered Array", Config.export_results);
 
     //Timing for the Ordered Array
     if (Config.ordered)
-        calcSearch(OrderedArray, Q, words, "Ordered Array");
+        calcSearch(OrderedArray, Q, words, "Ordered Array", Config.export_results);
 
     //Timing for the Binary Search Tree
     if (Config.binary)
-        calcSearch(BinaryTree, Q, words, "Binary Search Tree");
+        calcSearch(BinaryTree, Q, words, "Binary Search Tree", Config.export_results);
 
     //Timing for the AVL tree
     if (Config.avl)
-        calcSearch(AvlTree, Q, words, "AVL Tree");
+        calcSearch(AvlTree, Q, words, "AVL Tree", Config.export_results);
 
     //Timing for the Hash Table
     if (Config.hash)
-        calcSearch(HashTable, Q, words, "Hash Table");
+        calcSearch(HashTable, Q, words, "Hash Table", Config.export_results);
 
     delete[] words;
     delete[] wordIndex;
