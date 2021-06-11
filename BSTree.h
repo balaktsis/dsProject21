@@ -6,6 +6,7 @@
 #define TEST_BSTREE_H
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 struct BTNode {
@@ -37,9 +38,9 @@ protected:
     BTNode *insert(BTNode*, const string&);            //Takes a node and attempts to insert string in it or in its subtrees. Begins with root node.
     long getHeight(BTNode*);                           //Recursive node-height addition. Finds the longest route from root to a leaf.
     void deleteBST(BTNode*);                           //Recursive node deletion. Begins with root, root's children etc.
-    void inOrder(BTNode*);                             //Recursive in-ordered node showing. Begins with root node.
-    void preOrder(BTNode*);                            //Recursive pre-ordered node showing. Begins with root node.
-    void postOrder(BTNode*);                           //Recursive post-ordered node showing. Begins with root node.
+    void inOrder(BTNode*, ofstream&);                  //Recursive in-ordered node showing. Begins with root node.
+    void preOrder(BTNode*, ofstream&);                 //Recursive pre-ordered node showing. Begins with root node.
+    void postOrder(BTNode*, ofstream&);                //Recursive post-ordered node showing. Begins with root node.
     void deleteBST();                                  //Deletes Binary Search Tree.
 public:
     BSTree();                                          //Constructs a new Binary Search Tree.

@@ -5,6 +5,7 @@
 #include "BSTree.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 BSTree::BSTree() {
@@ -28,15 +29,27 @@ void BSTree::deleteBST() {
 }
 
 void BSTree::postOrder() {
-    postOrder(root);
+    ofstream f;
+    f.open("BST_Post_Order.txt",ios::out);
+    if(f.is_open())
+        postOrder(root,f);
+    f.close();
 }
 
 void BSTree::preOrder() {
-    preOrder(root);
+    ofstream f;
+    f.open("BST_Pre_Order.txt",ios::out);
+    if(f.is_open())
+        preOrder(root,f);
+    f.close();
 }
 
 void BSTree::inOrder() {
-    inOrder(root);
+    ofstream f;
+    f.open("BST_In_Order.txt",ios::out);
+    if(f.is_open())
+        inOrder(root,f);
+    f.close();
 }
 
 BTNode * BSTree::insert(BTNode *tNode, const string &data) {
@@ -130,28 +143,28 @@ void BSTree::deleteBST(BTNode *tNode) {
     }
 }
 
-void BSTree::inOrder(BTNode * tNode) {
+void BSTree::inOrder(BTNode * tNode, ofstream &f) {
     if (tNode != nullptr) {
-        inOrder(tNode->left);
-        cout << tNode->data << " : " << tNode->num << endl;
-        inOrder(tNode->right);
+        inOrder(tNode->left,f);
+        f << tNode->data << " : " << tNode->num << endl;
+        inOrder(tNode->right,f);
     }
 }
 
-void BSTree::preOrder(BTNode * tNode)
+void BSTree::preOrder(BTNode * tNode, ofstream &f)
 {
     if (tNode != nullptr) {
-        cout << tNode->data << " : " << tNode->num << endl;
-        preOrder(tNode->left);
-        preOrder(tNode->right);
+        f << tNode->data << " : " << tNode->num << endl;
+        preOrder(tNode->left,f);
+        preOrder(tNode->right,f);
     }
 }
 
-void BSTree::postOrder(BTNode * tNode) {
+void BSTree::postOrder(BTNode * tNode, ofstream &f) {
     if (tNode != nullptr) {
-        postOrder(tNode->left);
-        postOrder(tNode->right);
-        cout << tNode->data << " : " << tNode->num << endl;
+        postOrder(tNode->left,f);
+        postOrder(tNode->right,f);
+        f << tNode->data << " : " << tNode->num << endl;
     }
 }
 

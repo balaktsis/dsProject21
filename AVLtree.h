@@ -6,6 +6,7 @@
 #define TEST_AVLTREE_H
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -37,9 +38,9 @@ private:
     avlNode * rl_rotate(avlNode *);					//Right-Left node rotation of sub-tree.
     avlNode * balance(avlNode *);					//Checks and sets tree to AVL - balanced version, max(difference)=1.
     avlNode * insert(avlNode*, const string &);		//Recursive node-height addition. Finds the longest route from root to a leaf.
-    void inOrder(avlNode *);						//Recursive in-ordered node showing. Begins with root node.
-    void preOrder(avlNode *);						//Recursive pre-ordered node showing. Begins with root node.
-    void postOrder(avlNode*);						//Recursive post-ordered node showing. Begins with root node.
+    void inOrder(avlNode *, ofstream &);			//Recursive in-ordered node showing. Begins with root node.
+    void preOrder(avlNode *, ofstream &);			//Recursive pre-ordered node showing. Begins with root node.
+    void postOrder(avlNode*, ofstream &);			//Recursive post-ordered node showing. Begins with root node.
     void deleteAVL(avlNode*);						//Recursive node deletion. Begins with root, root's children etc.
     void deleteAVL();                               //Deletes AVL Binary Search Tree.
 public:

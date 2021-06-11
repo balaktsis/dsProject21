@@ -1,6 +1,7 @@
 #include "AVLtree.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 AVLTree::AVLTree() {
@@ -103,28 +104,28 @@ avlNode *AVLTree::insert(avlNode *tNode, const string &word) {
     return tNode;
 }
 
-void AVLTree::inOrder(avlNode *tNode) {
+void AVLTree::inOrder(avlNode *tNode, ofstream &f) {
     if (tNode == nullptr)
         return;
-    inOrder(tNode->left);
-    cout << tNode->data << " : " << tNode->num << endl;
-    inOrder(tNode->right);
+    inOrder(tNode->left, f);
+    f << tNode->data << " : " << tNode->num << endl;
+    inOrder(tNode->right, f);
 }
 
-void AVLTree::preOrder(avlNode *tNode) {
+void AVLTree::preOrder(avlNode *tNode, ofstream &f) {
     if (tNode == nullptr)
         return;
-    cout << tNode->data << " : " << tNode->num << endl;
-    preOrder(tNode->left);
-    preOrder(tNode->right);
+    f << tNode->data << " : " << tNode->num << endl;
+    preOrder(tNode->left, f);
+    preOrder(tNode->right, f);
 }
 
-void AVLTree::postOrder(avlNode *tNode) {
+void AVLTree::postOrder(avlNode *tNode, ofstream &f) {
     if (tNode == nullptr)
         return;
-    postOrder(tNode->left);
-    postOrder(tNode->right);
-    cout << tNode->data << " : " << tNode->num << endl;
+    postOrder(tNode->left, f);
+    postOrder(tNode->right, f);
+    f << tNode->data << " : " << tNode->num << endl;
 }
 
 int AVLTree::search(const string &word) {
@@ -186,15 +187,27 @@ bool AVLTree::deleteWord(const string &word) {
 }
 
 void AVLTree::postOrder() {
-    postOrder(root);
+    ofstream f;
+    f.open("AVL_Post_Order.txt", ios::out);
+    if(f.is_open())
+        postOrder(root,f);
+    f.close();
 }
 
 void AVLTree::preOrder() {
-    preOrder(root);
+    ofstream f;
+    f.open("AVL_Pre_Order.txt", ios::out);
+    if(f.is_open())
+        preOrder(root,f);
+    f.close();
 }
 
 void AVLTree::inOrder() {
-    inOrder(root);
+    ofstream f;
+    f.open("AVL_In_Order.txt", ios::out);
+    if(f.is_open())
+        inOrder(root,f);
+    f.close();
 }
 
 void AVLTree::deleteAVL(avlNode *tNode) {
