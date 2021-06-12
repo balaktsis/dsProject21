@@ -125,18 +125,15 @@ initStructures(config Config, UnorderedArray &unorderedArray, hashTable &HashTab
 
         }
         ifs.close();
-//        uniqueCount = HashTable.getSize();
+
 
         end = high_resolution_clock::now();
         elapsed = end - begin;
         cout<<"Filled up the structures in: "<<elapsed.count()<<"s"<<endl;
 
-//        printf("Unique words: %ld.\n", uniqueCount);
+
         printf("Total words: %ld.\n", count);
 
-//        cout<<"Size of Unordered: "<<unorderedArray.getSize()<<endl;
-//        cout<<"Size of Ordered: "<<OrderedArray.getSize()<<endl;
-//        cout<<"Size of Hash Table: "<<HashTable.getSize()<<endl;
 
     } else
         cout << "File error" << endl;
