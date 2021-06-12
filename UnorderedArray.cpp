@@ -88,9 +88,9 @@ bool UnorderedArray::Search_help(const string &word, long &pos) {
     }
 }
 
-bool UnorderedArray::deleteWord(const string &word) {               //Deletes an existing word of the array or returns false
-    long pos;                                                        //if word doesn't exist
-    if(!Search_help(word,pos)) {                                 //Checks the existence and returns position in array (if true)
+bool UnorderedArray::deleteWord(const string &word) {           //Deletes an existing word of the array or returns false
+    long pos;                                                   //if word doesn't exist
+    if(!Search_help(word,pos)) {                            //Checks the existence and returns position in array (if true)
         return false;
     }
     else {
@@ -100,8 +100,8 @@ bool UnorderedArray::deleteWord(const string &word) {               //Deletes an
         new_data = new string[size-1];
         new_num = new int[size-1];
 
+        memcpy(new_num,num,pos*sizeof(int));
         copy(&data[0],&data[pos-1], new_data);
-        copy(&num[0],&num[pos-1], new_num);
         //Copying to new arrays (one-less-cell-sized) data[] and num[]
 
         for(long i = pos; i < size-1; i++) {
