@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <random>
@@ -161,7 +160,9 @@ void calcSearch(searchable &structure, long searchCount, string *words, string a
     ofstream output;
     string filename;
     filename = arrName + ", Q:  " + to_string(searchCount);
-    output.open (filename);
+    if(export_results){
+        output.open (filename);
+    }
 
 
     long long count = 0;
