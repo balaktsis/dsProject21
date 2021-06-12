@@ -43,16 +43,16 @@ int main() {
     AVLTree AvlTree;
 
     config Config{
-            Config.unordered = false,
-            Config.ordered = false,
+            Config.unordered = true,
+            Config.ordered = true,
             Config.binary = true,
-            Config.avl = false,
+            Config.avl = true,
             Config.hash = true,
 
             Config.export_results = false    //If true, the results will be written to a file. Will have an adverse effect to performance
     };
 
-    Config.filename = "../small-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
+    Config.filename = "small-file.txt";   //Name of the input file ('../' is needed for the project to compile on CLion)
 
 
 
@@ -63,13 +63,8 @@ int main() {
 
 
     //Search benchmark (first parameter being the random word count - Q)
-
-    timeQSearches(Config, filewords, 1000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, 3000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
     timeQSearches(Config, filewords, 5000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, 7000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, 10000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
-    timeQSearches(Config, filewords, 15000, unorderedArray, HashTable, OrderedArray, BinaryTree, AvlTree);
+
 
     return 0;
 }
@@ -192,10 +187,10 @@ void calcSearch(searchable &structure, long searchCount, string *words, string a
 
     duration<double, milli> elapsed = end - begin;
 
-//    cout<<"Searching "<<searchCount<<" words in "<<arrName<<" yielded "<<count<<" results in ";
-//    printf(" %.4lf ms\n", elapsed.count());
-    cout<<""<<searchCount<<" - "<<arrName;
-    printf(" - %.4lf\n", elapsed.count());
+    cout<<"Searching "<<searchCount<<" words in "<<arrName<<" yielded "<<count<<" results in ";
+    printf(" %.4lf ms\n", elapsed.count());
+//    cout<<""<<searchCount<<" - "<<arrName;
+//    printf(" - %.4lf\n", elapsed.count());
 }
 
 
